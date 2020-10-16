@@ -1,14 +1,14 @@
 from datetime import date
 
 from app.models.education import Education
-from app.models.student import Student
+from app.models.user import User
 from app.models.account import Account
 from app.models.school import School
 from app.exceptions import InvalidInputFormat
 
 
 def list_education(*, id: int) -> list:
-    education = Education.objects.filter(student__account__id=id)
+    education = Education.objects.filter(user__account__id=id)
     return [
         {
             'id': e.id,
@@ -23,7 +23,7 @@ def list_education(*, id: int) -> list:
 
 def create_education(*, account: Account, school_name: str, start_date: date, end_date: date, major: str, degree: str) -> list:
     e = Education(
-        student=get_student_account(account),
+        user=get_user_account(account),
         school=get_school_with_name(school_name),
         start_date=start_date,
         end_date=end_date,
@@ -56,10 +56,10 @@ def delete_education(*, account: Account, id: int) -> list:
     return list_education(id=account.id)
 
 
-def get_student_account(account: Account) -> Student:
-    e = Student.objects.filter(account=account).first()
+def get_user_account(account: Account) -> User:
+    e = User.objects.filter(account=account).first()
     if e is None:
-        raise InvalidInputFormat("Student not found!")
+        raise InvalidInputFormat("User not found!")
     return e
 
 

@@ -10,8 +10,8 @@ class AccountAdmin(admin.ModelAdmin):
     search_fields = ('username', )
 
 
-@admin.register(Student)
-class StudentAdmin(admin.ModelAdmin):
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
     search_fields = ('firstname', 'lastname', 'account__username', )
 
 
@@ -47,7 +47,7 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Education)
 class EducationAdmin(admin.ModelAdmin):
-    search_fields = ('student__account__username', )
+    search_fields = ('user__account__username', )
 
 
 @admin.register(Experience)
@@ -57,4 +57,4 @@ class ExperienceAdmin(admin.ModelAdmin):
 
 @admin.register(Social)
 class SocialAdmin(admin.ModelAdmin):
-    search_fields = ('student__account__username', )
+    search_fields = ('user__account__username', )

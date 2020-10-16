@@ -1,17 +1,17 @@
 from app.models.job import Job
 from app.models.post import Post
 from app.models.skill import Skill
-from app.models.student import Student
+from app.models.user import User
 
 
-def students_by_skill() -> list:
+def users_by_skill() -> list:
     skill_list = Skill.objects.all()
     res = [
         {
             'name': s.name,
-            'count': Student.objects.filter(skills=s).count()
+            'count': User.objects.filter(skills=s).count()
         }
-        for s in skill_list if Student.objects.filter(skills=s).count() != 0
+        for s in skill_list if User.objects.filter(skills=s).count() != 0
     ]
     return sorted(res, key=lambda x: x['name'], reverse=True)
 

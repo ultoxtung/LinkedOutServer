@@ -1,7 +1,7 @@
 from app.exceptions import InvalidInputFormat
 from app.models.account import Account
 from app.models.company import Company
-from app.models.student import Student
+from app.models.user import User
 
 
 def check_follow(*, account: Account, id: int) -> bool:
@@ -23,11 +23,11 @@ def create_follow(*, account: Account, id: int) -> bool:
             "Company with id {} doesn't exist.".format(id))
         return {'followed': False}
 
-    student_account = get_student_account(account)
+    user_account = get_user_account(account)
     if c.followers.filter(account=account).exists():
         raise InvalidInputFormat(
             "User with id {} already followed comp. with id {}.".format(account.id, id))
-    c.followers.add(student_account)
+    c.followers.add(user_account)
     return {'followed': True}
 
 
@@ -38,11 +38,11 @@ def delete_follow(*, account: Account, id: int) -> bool:
             "Company with id {} doesn't exist.".format(id))
         return {'followed': False}
 
-    student_account = get_student_account(account)
+    user_account = get_user_account(account)
     if not c.followers.filter(account=account).exists():
         raise InvalidInputFormat(
             "User with id {} hasn't followed comp. with id {} yet.".format(account.id, id))
-    c.followers.remove(student_account)
+    c.followers.remove(user_account)
     return {'followed': False}
 
 
@@ -58,7 +58,7 @@ def count_follow(*, account: Account, id: int) -> dict:
 
 
 def company_followed(*, account: Account, id: int) -> list:
-    companies = Company.objects.filter(followers=get_student_with_id(id))
+    companies = Company.objects.filter(followers=get_user_with_id(id))
     return [
         {
             'id': c.account.id,
@@ -70,12 +70,12 @@ def company_followed(*, account: Account, id: int) -> list:
     ]
 
 
-def get_student_account(account: Account) -> Student:
-    e = Student.objects.filter(account=account).first()
+def get_user_account(account: Account) -> User:
+    e = User.objects.filter(account=account).first()
     if e is None:
-        raise InvalidInputFormat("Student not found!")
+        raise InvalidInputFormat("User not found!")
     return e
 
 
-def get_student_with_id(id: int) -> Student:
-    return Student.objects.filter(account__id=id).first()
+def get_user_with_id(id: int) -> User:
+    return User.objects.filter(account__id=id).first()

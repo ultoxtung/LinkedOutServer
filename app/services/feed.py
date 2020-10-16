@@ -7,17 +7,17 @@ from app.models.company import Company
 from app.models.job import Job
 from app.models.post import Post
 from app.models.skill import Skill
-from app.models.student import Student
+from app.models.user import User
 
 
 def get_feed(*, account: Account) -> list:
-    student = get_student_account(account)
+    user = get_user_account(account)
 
-    followed_companies = Company.objects.filter(followers=student)
+    followed_companies = Company.objects.filter(followers=user)
     job_list = Job.objects.filter(
         company__in=followed_companies).order_by('-published_date')
 
-    already_have_skills = student.skills.all()
+    already_have_skills = user.skills.all()
     sid = []
     [sid.append(s.id) for s in already_have_skills]
     not_have_skills = Skill.objects.exclude(id__in=sid)
@@ -34,9 +34,9 @@ def get_feed(*, account: Account) -> list:
 
 def suggest_job(*, account: Account) -> list:
     NUMBER_OF_SUGGESTION = 3
-    student = get_student_account(account)
+    user = get_user_account(account)
 
-    already_have_skills = student.skills.all()
+    already_have_skills = user.skills.all()
     sid = []
     [sid.append(s.id) for s in already_have_skills]
     not_have_skills = Skill.objects.exclude(id__in=sid)
@@ -45,7 +45,7 @@ def suggest_job(*, account: Account) -> list:
     job_list = job_list.exclude(
         skills__in=not_have_skills).order_by('-published_date')
     job_list = job_list.exclude(
-        company__followers=student).order_by('-published_date')
+        company__followers=user).order_by('-published_date')
 
     res = list(job_list)
     res = list(dict.fromkeys(res))
@@ -58,17 +58,17 @@ def suggest_job(*, account: Account) -> list:
 
 def suggest_follow(*, account: Account) -> list:
     NUMBER_OF_SUGGESTION = 3
-    student = get_student_account(account)
+    user = get_user_account(account)
 
-    comps = Company.objects.exclude(followers=student)
+    comps = Company.objects.exclude(followers=user)
     if comps.count() < NUMBER_OF_SUGGESTION:
         return comps
     fst = randint(0, comps.count() - NUMBER_OF_SUGGESTION)
     return comps[fst:fst + NUMBER_OF_SUGGESTION]
 
 
-def get_student_account(account: Account) -> Student:
-    e = Student.objects.filter(account=account).first()
+def get_user_account(account: Account) -> User:
+    e = User.objects.filter(account=account).first()
     if e is None:
-        raise InvalidInputFormat("Student not found!")
+        raise InvalidInputFormat("User not found!")
     return e

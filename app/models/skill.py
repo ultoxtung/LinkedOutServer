@@ -1,5 +1,4 @@
 from django.db import models
-from django_prometheus.models import ExportModelOperationsMixin
 
 
 def store_picture():
@@ -7,7 +6,7 @@ def store_picture():
     pass
 
 
-class Skill(ExportModelOperationsMixin('skill'), models.Model):
+class Skill(models.Model):
     name = models.CharField(max_length=64)
 
     def __str__(self):

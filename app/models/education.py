@@ -1,12 +1,11 @@
 from django.db import models
-from django_prometheus.models import ExportModelOperationsMixin
 
 from .school import School
-from .student import Student
+from .user import User
 
 
-class Education(ExportModelOperationsMixin('education'), models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+class Education(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()

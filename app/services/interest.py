@@ -1,6 +1,6 @@
 from app.models.post import Post
 from app.models.account import Account
-from app.models.student import Student
+from app.models.user import User
 from app.exceptions import InvalidInputFormat
 
 
@@ -10,7 +10,7 @@ def check_interest(*, account: Account, id: int) -> bool:
         raise InvalidInputFormat("Post with id {} doesn't exist.".format(id))
         return { 'interested': False }
     else:
-        if p.interested_students.filter(account=account).exists():
+        if p.interested_users.filter(account=account).exists():
             return { 'interested': True }
         return { 'interested': False }
 
@@ -21,10 +21,10 @@ def create_interest (*, account: Account, id: int) -> bool:
         raise InvalidInputFormat("Post with id {} doesn't exist.".format(id))
         return { 'interested': False }
 
-    student_account = get_student_account(account)
-    if p.interested_students.filter(account=account).exists():
+    user_account = get_user_account(account)
+    if p.interested_users.filter(account=account).exists():
         raise InvalidInputFormat("User with id {} already interested post with id {}.".format(account.id, id))
-    p.interested_students.add(student_account)
+    p.interested_users.add(user_account)
     return { 'interested': True }
 
 
@@ -34,10 +34,10 @@ def delete_interest (*, account: Account, id: int) -> bool:
         raise InvalidInputFormat("Post with id {} doesn't exist.".format(id))
         return { 'interested': False }
 
-    student_account = get_student_account(account)
-    if not p.interested_students.filter(account=account).exists():
+    user_account = get_user_account(account)
+    if not p.interested_users.filter(account=account).exists():
         raise InvalidInputFormat("User with id {} hasn't interested post with id {} yet.".format(account.id, id))
-    p.interested_students.remove(student_account)
+    p.interested_users.remove(user_account)
     return { 'interested': False }
 
 
@@ -47,7 +47,7 @@ def count_interest (*, account: Account, id: int) -> dict:
         raise InvalidInputFormat("Post with id {} doesn't exist.".format(id))
         return { 'count': 0 }
     return {
-        'count': p.interested_students.count()
+        'count': p.interested_users.count()
     }
 
 
@@ -61,27 +61,27 @@ def account_interested (*, account: Account, id: int) -> list:
             'firstname': s.firstname,
             'lastname': s.lastname,
             'profile_picture': s.profile_picture,
-        } for s in p.interested_students.all()
+        } for s in p.interested_users.all()
     ]
 
 
 def post_interested (*, account: Account, id: int) -> list:
-    posts = Post.objects.filter(interested_students=get_student_with_id(id))
+    posts = Post.objects.filter(interested_users=get_user_with_id(id))
     return [
         {
             'id': p.id,
             'title': p.title,
             'content': p.content,
-            'interest_count': p.interested_students.count(),
+            'interest_count': p.interested_users.count(),
         } for p in posts
     ]
 
 
-def get_student_account(account: Account) -> Student:
-    e = Student.objects.filter(account=account).first()
+def get_user_account(account: Account) -> User:
+    e = User.objects.filter(account=account).first()
     if e is None:
-        raise InvalidInputFormat("Student not found!")
+        raise InvalidInputFormat("User not found!")
     return e
 
-def get_student_with_id(id: int) -> Student:
-    return Student.objects.filter(account__id=id).first()
+def get_user_with_id(id: int) -> User:
+    return User.objects.filter(account__id=id).first()

@@ -1,5 +1,4 @@
 from django.db import models
-from django_prometheus.models import ExportModelOperationsMixin
 
 from .company import Company
 from .city import City
@@ -11,7 +10,7 @@ def store_picture(instance, filename: str) -> str:
     return "job/job_" + "{}.{}".format(instance.id, extension)
 
 
-class Job(ExportModelOperationsMixin('job'), models.Model):
+class Job(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
     description = models.TextField()

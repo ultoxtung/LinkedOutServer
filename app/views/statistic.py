@@ -6,16 +6,16 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 
-from app.services.statistic import students_by_skill, jobs_by_skill, posts_by_skill
+from app.services.statistic import users_by_skill, jobs_by_skill, posts_by_skill
 
 
-class StudentsBySkillView(APIView):
+class UsersBySkillView(APIView):
     class OutputSerializer(serializers.Serializer):
         name = serializers.CharField()
         count = serializers.IntegerField()
 
         class Meta:
-            ref_name = 'StudentsBySkillOut'
+            ref_name = 'UsersBySkillOut'
             fields = ['name', 'count']
 
     permission_classes = [AllowAny]
@@ -24,7 +24,7 @@ class StudentsBySkillView(APIView):
     @swagger_auto_schema(responses={200: OutputSerializer(many=True)})
     @method_decorator(ensure_csrf_cookie)
     def get(self, request):
-        result = students_by_skill()
+        result = users_by_skill()
         return Response(self.OutputSerializer(result, many=True).data, status=status.HTTP_200_OK)
 
 
@@ -34,7 +34,7 @@ class JobsBySkillView(APIView):
         count = serializers.IntegerField()
 
         class Meta:
-            ref_name = 'StudentsBySkillOut'
+            ref_name = 'UsersBySkillOut'
             fields = ['name', 'count']
 
     permission_classes = [AllowAny]
@@ -53,7 +53,7 @@ class PostsBySkillView(APIView):
         count = serializers.IntegerField()
 
         class Meta:
-            ref_name = 'StudentsBySkillOut'
+            ref_name = 'UsersBySkillOut'
             fields = ['name', 'count']
 
     permission_classes = [AllowAny]

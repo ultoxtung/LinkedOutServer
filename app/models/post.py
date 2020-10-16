@@ -1,8 +1,7 @@
 from django.db import models
-from django_prometheus.models import ExportModelOperationsMixin
 
 from .skill import Skill
-from .student import Student
+from .user import User
 
 
 def store_picture(instance, filename: str) -> str:
@@ -10,13 +9,13 @@ def store_picture(instance, filename: str) -> str:
     return "post_" + "{}.{}".format(instance.id, extension)
 
 
-class Post(ExportModelOperationsMixin('post'), models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+class Post(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
     content = models.TextField(max_length=1024)
     published_date = models.DateField()
     post_picture = models.ImageField(
         upload_to=store_picture, default='post/default.jpg')
     skills = models.ManyToManyField(Skill)
-    interested_students = models.ManyToManyField(
-        Student, related_name='interest')
+    interested_users = models.ManyToManyField(
+        User, related_name='interest')

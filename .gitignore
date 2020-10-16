@@ -185,8 +185,8 @@ media/*
 
 !media/profile
 media/profile/*
-!media/profile/student_default_male.jpg
-!media/profile/student_default_female.jpg
+!media/profile/user_default_male.jpg
+!media/profile/user_default_female.jpg
 !media/profile/company_default.jpg
 
 !media/post

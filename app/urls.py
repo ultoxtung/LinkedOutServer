@@ -26,9 +26,9 @@ from app.views.post import (PostCreateView, PostDeleteView, PostGetView,
 from app.views.search import SearchView
 from app.views.skill import SkillCreateView, SkillDeleteView, SkillListView
 from app.views.statistic import (JobsBySkillView, PostsBySkillView,
-                                 StudentsBySkillView)
-from app.views.student import (StudentCreateView, StudentGetView,
-                               StudentProfilePictureView, StudentUpdateView)
+                                 UsersBySkillView)
+from app.views.user import (UserCreateView, UserGetView,
+                            UserProfilePictureView, UserUpdateView)
 from app.views.tag import (CompanyTagView, LocationTagView, SchoolTagView,
                            SkillTagView, SpecialtyTagView, TitleTagView)
 
@@ -52,11 +52,11 @@ phone_patterns = [
     path('delete', PhoneDeleteView.as_view()),
 ]
 
-student_patterns = [
-    path('get', StudentGetView.as_view()),
-    path('create', StudentCreateView.as_view()),
-    path('update', StudentUpdateView.as_view()),
-    path('upload', StudentProfilePictureView.as_view()),
+user_patterns = [
+    path('get', UserGetView.as_view()),
+    path('create', UserCreateView.as_view()),
+    path('update', UserUpdateView.as_view()),
+    path('upload', UserProfilePictureView.as_view()),
 ]
 
 company_patterns = [
@@ -137,14 +137,14 @@ feed_patterns = [
 ]
 
 statistic_patterns = [
-    path('students-by-skill', StudentsBySkillView.as_view()),
+    path('users-by-skill', UsersBySkillView.as_view()),
     path('jobs-by-skill', JobsBySkillView.as_view()),
     path('posts-by-skill', PostsBySkillView.as_view()),
 ]
 
 urlpatterns = [
     path('account/', include((account_patterns, 'account'))),
-    path('student/', include((student_patterns, 'student'))),
+    path('user/', include((user_patterns, 'user'))),
     path('company/', include((company_patterns, 'company'))),
     path('skill/', include((skill_patterns, 'skill'))),
     path('email/', include((email_patterns, 'email'))),

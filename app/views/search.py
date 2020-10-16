@@ -13,7 +13,7 @@ from app.models.job import Job
 from app.models.post import Post
 from app.models.skill import Skill
 from app.models.specialty import Specialty
-from app.models.student import Student
+from app.models.user import User
 from app.services.search import search
 
 
@@ -61,19 +61,19 @@ class SpecialtyRelatedField(serializers.RelatedField):
 
 class PostSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
-    student_firstname = serializers.SerializerMethodField()
-    student_lastname = serializers.SerializerMethodField()
-    student_profile_picture = serializers.SerializerMethodField()
+    user_firstname = serializers.SerializerMethodField()
+    user_lastname = serializers.SerializerMethodField()
+    user_profile_picture = serializers.SerializerMethodField()
     skills = SkillRelatedField(queryset=Skill.objects.all(), many=True)
 
-    def get_student_firstname(self, obj):
-        return obj.student.firstname
+    def get_user_firstname(self, obj):
+        return obj.user.firstname
 
-    def get_student_lastname(self, obj):
-        return obj.student.lastname
+    def get_user_lastname(self, obj):
+        return obj.user.lastname
 
-    def get_student_profile_picture(self, obj):
-        return obj.student.profile_picture.url
+    def get_user_profile_picture(self, obj):
+        return obj.user.profile_picture.url
 
     def get_type(self, obj):
         return 'post'
@@ -81,7 +81,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         ref_name = 'PostSerializer'
-        fields = ['type', 'id', 'student_firstname', 'student_lastname', 'student_profile_picture',
+        fields = ['type', 'id', 'user_firstname', 'user_lastname', 'user_profile_picture',
                   'title', 'content', 'published_date', 'post_picture', 'skills']
 
 
@@ -134,7 +134,7 @@ class CompanySerializer(serializers.ModelSerializer):
                   'specialties']
 
 
-class StudentSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
     id = serializers.SerializerMethodField()
     skills = SkillRelatedField(
@@ -146,11 +146,11 @@ class StudentSerializer(serializers.ModelSerializer):
         return obj.account.id
 
     def get_type(self, obj):
-        return 'student'
+        return 'user'
 
     class Meta:
-        model = Student
-        ref_name = 'StudentSerializer'
+        model = User
+        ref_name = 'UserSerializer'
         fields = ['type', 'id', 'firstname', 'lastname', 'dateofbirth', 'gender',
                   'profile_picture', 'description', 'skills']
 
@@ -175,8 +175,8 @@ class SearchView(APIView):
                 return JobSerializer
             elif model == Company:
                 return CompanySerializer
-            elif model == Student:
-                return StudentSerializer
+            elif model == User:
+                return UserSerializer
 
         def to_representation(self, instance):
             serializer = self.get_serializer(instance.__class__)

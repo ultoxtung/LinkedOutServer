@@ -1,12 +1,11 @@
 from django.db import models
-from django_prometheus.models import ExportModelOperationsMixin
 
 from .company import Company
-from .student import Student
+from .user import User
 
 
-class Experience(ExportModelOperationsMixin('experience'), models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+class Experience(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     company_name = models.CharField(max_length=255, null=True)
     company_picture = models.ImageField(default='profile/company_default.jpg')

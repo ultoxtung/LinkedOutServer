@@ -8,12 +8,12 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from app.models.student import Student
-from app.services.student import (create_student, get_student,
-                                  set_profile_picture, update_student)
+from app.models.user import User
+from app.services.user import (create_user, get_user,
+                                  set_profile_picture, update_user)
 
 
-class StudentProfilePictureView(APIView):
+class UserProfilePictureView(APIView):
     parser_classes = (MultiPartParser,)
     permission_classes = [IsAuthenticated]
 
@@ -25,18 +25,18 @@ class StudentProfilePictureView(APIView):
         return Response("Uploaded.", status=status.HTTP_201_CREATED)
 
 
-class StudentGetView(APIView):
+class UserGetView(APIView):
     class InputSerializer(serializers.Serializer):
         id = serializers.IntegerField(required=True)
 
         class Meta:
-            ref_name = 'StudentGetIn'
+            ref_name = 'UserGetIn'
             fields = ['id']
 
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
-            model = Student
-            ref_name = 'StudentGetOut'
+            model = User
+            ref_name = 'UserGetOut'
             fields = ['firstname', 'lastname', 'dateofbirth', 'gender',
                       'profile_picture', 'description']
 
@@ -48,22 +48,22 @@ class StudentGetView(APIView):
     def get(self, request):
         serializer = self.InputSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
-        result = get_student(**serializer.validated_data)
+        result = get_user(**serializer.validated_data)
         return Response(self.OutputSerializer(result).data, status=status.HTTP_200_OK)
 
 
-class StudentCreateView(APIView):
+class UserCreateView(APIView):
     class InputSerializer(serializers.ModelSerializer):
         class Meta:
-            model = Student
-            ref_name = 'StudentCreateIn'
+            model = User
+            ref_name = 'UserCreateIn'
             fields = ['firstname', 'lastname',
                       'dateofbirth', 'gender', 'description']
 
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
-            model = Student
-            ref_name = 'StudentCreateOut'
+            model = User
+            ref_name = 'UserCreateOut'
             fields = ['firstname', 'lastname', 'dateofbirth', 'gender',
                       'profile_picture', 'description']
 
@@ -74,23 +74,23 @@ class StudentCreateView(APIView):
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        result = create_student(account=request.user, **
+        result = create_user(account=request.user, **
                                 serializer.validated_data)
         return Response(self.OutputSerializer(result).data, status=status.HTTP_201_CREATED)
 
 
-class StudentUpdateView(APIView):
+class UserUpdateView(APIView):
     class InputSerializer(serializers.ModelSerializer):
         class Meta:
-            model = Student
-            ref_name = 'StudentUpdateIn'
+            model = User
+            ref_name = 'UserUpdateIn'
             fields = ['firstname', 'lastname',
                       'dateofbirth', 'gender', 'description']
 
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
-            model = Student
-            ref_name = 'StudentUpdateOut'
+            model = User
+            ref_name = 'UserUpdateOut'
             fields = ['firstname', 'lastname', 'dateofbirth', 'gender',
                       'profile_picture', 'description']
 
@@ -101,6 +101,6 @@ class StudentUpdateView(APIView):
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        result = update_student(account=request.user, **
+        result = update_user(account=request.user, **
                                 serializer.validated_data)
         return Response(self.OutputSerializer(result).data, status=status.HTTP_200_OK)

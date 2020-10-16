@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.db.models import Count
 
-from app.models.student import Student
+from app.models.user import User
 from app.models.company import Company
 from app.models.job import Job
 from app.models.post import Post
@@ -14,8 +14,8 @@ def search (*, type: str, **kwargs) -> list:
             (kwargs.get('query') or '') if ('query' in kwargs) else '',
             (kwargs.get('specialties') or '') if ('specialties' in kwargs) else ''
         )
-    elif type == 'student':
-        return student_search(
+    elif type == 'user':
+        return user_search(
             (kwargs.get('query') or '') if ('query' in kwargs) else '',
             (kwargs.get('skills') or '') if ('skills' in kwargs) else ''
         )
@@ -45,17 +45,17 @@ def company_search (query: str, specialties: str) -> list:
     return list(companies_sw.union(companies_ct, all=False))
 
 
-def student_search (query: str, skills: str) -> list:
+def user_search (query: str, skills: str) -> list:
     print(skills)
     if skills == '':
-        students_sw = Student.objects.filter(Q(firstname__istartswith=query) | Q(lastname__istartswith=query))
-        students_ct = Student.objects.filter(Q(firstname__icontains=query) | Q(lastname__icontains=query))
+        users_sw = User.objects.filter(Q(firstname__istartswith=query) | Q(lastname__istartswith=query))
+        users_ct = User.objects.filter(Q(firstname__icontains=query) | Q(lastname__icontains=query))
     else:
         skill_list = skills.split(',')
-        students_sw = Student.objects.filter((Q(firstname__istartswith=query) | Q(lastname__istartswith=query)) & Q(skills__name__in=skill_list)).annotate(num_attr=Count('skills')).filter(num_attr=len(skill_list))
-        students_ct = Student.objects.filter((Q(firstname__icontains=query) | Q(lastname__icontains=query)) & Q(skills__name__in=skill_list)).annotate(num_attr=Count('skills')).filter(num_attr=len(skill_list))
+        users_sw = User.objects.filter((Q(firstname__istartswith=query) | Q(lastname__istartswith=query)) & Q(skills__name__in=skill_list)).annotate(num_attr=Count('skills')).filter(num_attr=len(skill_list))
+        users_ct = User.objects.filter((Q(firstname__icontains=query) | Q(lastname__icontains=query)) & Q(skills__name__in=skill_list)).annotate(num_attr=Count('skills')).filter(num_attr=len(skill_list))
 
-    return list(students_sw.union(students_ct, all=False))
+    return list(users_sw.union(users_ct, all=False))
 
 
 def job_search (query: str, skills: str) -> list:

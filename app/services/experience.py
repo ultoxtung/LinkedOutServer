@@ -4,11 +4,11 @@ from app.exceptions import InvalidInputFormat
 from app.models.account import Account
 from app.models.company import Company
 from app.models.experience import Experience
-from app.models.student import Student
+from app.models.user import User
 
 
 def list_experience(*, id: int) -> list:
-    experience = Experience.objects.filter(student__account__id=id)
+    experience = Experience.objects.filter(user__account__id=id)
     result = []
     for e in experience:
         if e.company:
@@ -38,7 +38,7 @@ def list_experience(*, id: int) -> list:
 def create_experience(*, account: Account, company_name: str, start_date: date, end_date: date, title: str, description: str) -> list:
     comp = get_company_with_name(company_name)
     e = Experience(
-        student=get_student_account(account),
+        user=get_user_account(account),
         company=None,
         company_name=None,
         start_date=start_date,
@@ -82,10 +82,10 @@ def delete_experience(*, account: Account, id: int) -> list:
     return list_experience(id=account.id)
 
 
-def get_student_account(account: Account) -> Student:
-    e = Student.objects.filter(account=account).first()
+def get_user_account(account: Account) -> User:
+    e = User.objects.filter(account=account).first()
     if e is None:
-        raise InvalidInputFormat("Student not found!")
+        raise InvalidInputFormat("User not found!")
     return e
 
 

@@ -40,7 +40,6 @@ urlpatterns = [
                                            cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc',
                                          cache_timeout=0), name='schema-redoc'),
-    url('', include('django_prometheus.urls')),
     path('admin/', admin.site.urls),
     path('baton/', include('baton.urls')),
     path('api/', include('app.urls')),

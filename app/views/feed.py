@@ -60,19 +60,19 @@ class SpecialtyRelatedField(serializers.RelatedField):
 
 class PostSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
-    student_firstname = serializers.SerializerMethodField()
-    student_lastname = serializers.SerializerMethodField()
-    student_profile_picture = serializers.SerializerMethodField()
+    user_firstname = serializers.SerializerMethodField()
+    user_lastname = serializers.SerializerMethodField()
+    user_profile_picture = serializers.SerializerMethodField()
     skills = SkillRelatedField(queryset=Skill.objects.all(), many=True)
 
-    def get_student_firstname(self, obj):
-        return obj.student.firstname
+    def get_user_firstname(self, obj):
+        return obj.user.firstname
 
-    def get_student_lastname(self, obj):
-        return obj.student.lastname
+    def get_user_lastname(self, obj):
+        return obj.user.lastname
 
-    def get_student_profile_picture(self, obj):
-        return obj.student.profile_picture.url
+    def get_user_profile_picture(self, obj):
+        return obj.user.profile_picture.url
 
     def get_type(self, obj):
         return 'post'
@@ -80,7 +80,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         ref_name = 'PostSerializer'
-        fields = ['type', 'id', 'student_firstname', 'student_lastname', 'student_profile_picture',
+        fields = ['type', 'id', 'user_firstname', 'user_lastname', 'user_profile_picture',
                   'title', 'content', 'published_date', 'post_picture', 'skills']
 
 

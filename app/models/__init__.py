@@ -11,9 +11,10 @@ from .post import Post
 from .school import School
 from .skill import Skill
 from .specialty import Specialty
-from .student import Student
+from .user import User
 from .title import Title
 from .social import Social
 
 __all__ = ['Account', 'City', 'Company', 'Education', 'Email', 'Experience',
-           'Job', 'Phone', 'Post', 'School', 'Skill', 'Specialty', 'Student','Social', 'Title']
+           'Job', 'Phone', 'Post', 'School', 'Skill', 'Specialty', 'User',
+           'Social', 'Title']
