@@ -8,7 +8,7 @@ from app.models.post import Post
 from app.exceptions import InvalidInputFormat
 
 
-def search (*, type: str, **kwargs) -> list:
+def search(*, type: str, **kwargs) -> list:
     if type == 'company':
         return company_search(
             (kwargs.get('query') or '') if ('query' in kwargs) else '',
@@ -33,7 +33,7 @@ def search (*, type: str, **kwargs) -> list:
         raise InvalidInputFormat("Invalid search type!")
 
 
-def company_search (query: str, specialties: str) -> list:
+def company_search(query: str, specialties: str) -> list:
     if specialties == '':
         companies_sw = Company.objects.filter(name__istartswith=query)
         companies_ct = Company.objects.filter(name__icontains=query)
@@ -45,7 +45,7 @@ def company_search (query: str, specialties: str) -> list:
     return list(companies_sw.union(companies_ct, all=False))
 
 
-def user_search (query: str, skills: str) -> list:
+def user_search(query: str, skills: str) -> list:
     print(skills)
     if skills == '':
         users_sw = User.objects.filter(Q(firstname__istartswith=query) | Q(lastname__istartswith=query))
@@ -58,7 +58,7 @@ def user_search (query: str, skills: str) -> list:
     return list(users_sw.union(users_ct, all=False))
 
 
-def job_search (query: str, skills: str) -> list:
+def job_search(query: str, skills: str) -> list:
     if skills == '':
         jobs_ct = Job.objects.filter(title__icontains=query).order_by('-published_date')
     else:
@@ -68,7 +68,7 @@ def job_search (query: str, skills: str) -> list:
     return list(jobs_ct)
 
 
-def post_search (query: str, skills: str) -> list:
+def post_search(query: str, skills: str) -> list:
     if skills == '':
         posts_ct = Post.objects.filter(title__icontains=query).order_by('-published_date')
     else:

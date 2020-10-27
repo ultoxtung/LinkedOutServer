@@ -34,7 +34,7 @@ class JobsBySkillView(APIView):
         count = serializers.IntegerField()
 
         class Meta:
-            ref_name = 'UsersBySkillOut'
+            ref_name = 'JobsBySkillOut'
             fields = ['name', 'count']
 
     permission_classes = [AllowAny]
@@ -53,7 +53,7 @@ class PostsBySkillView(APIView):
         count = serializers.IntegerField()
 
         class Meta:
-            ref_name = 'UsersBySkillOut'
+            ref_name = 'PostsBySkillOut'
             fields = ['name', 'count']
 
     permission_classes = [AllowAny]

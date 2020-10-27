@@ -62,6 +62,7 @@ class ExperienceCreateView(APIView):
 
     class OutputSerializer(serializers.Serializer):
         id = serializers.IntegerField()
+        account_id = serializers.IntegerField(required=False)
         company_name = serializers.CharField()
         profile_picture = serializers.ImageField()
         start_date = serializers.DateField()
@@ -71,7 +72,7 @@ class ExperienceCreateView(APIView):
 
         class Meta:
             ref_name = 'ExperienceCreateOut'
-            fields = ['id', 'company_name', 'profile_picture',
+            fields = ['id', 'account_id', 'company_name', 'profile_picture',
                       'start_date', 'end_date', 'title', 'description']
 
     permission_classes = [IsAuthenticated]
@@ -104,6 +105,7 @@ class ExperienceUpdateView(APIView):
 
     class OutputSerializer(serializers.Serializer):
         id = serializers.IntegerField()
+        account_id = serializers.IntegerField(required=False)
         company_name = serializers.CharField()
         profile_picture = serializers.ImageField()
         start_date = serializers.DateField()
@@ -113,8 +115,8 @@ class ExperienceUpdateView(APIView):
 
         class Meta:
             ref_name = 'ExperienceUpdateOut'
-            ['id', 'company_name', 'profile_picture',
-                'start_date', 'end_date', 'title', 'description']
+            fields = ['id', 'account_id', 'company_name', 'profile_picture',
+                      'start_date', 'end_date', 'title', 'description']
 
     permission_classes = [IsAuthenticated]
 
@@ -138,6 +140,7 @@ class ExperienceDeleteView(APIView):
 
     class OutputSerializer(serializers.Serializer):
         id = serializers.IntegerField()
+        account_id = serializers.IntegerField(required=False)
         company_name = serializers.CharField()
         profile_picture = serializers.ImageField()
         start_date = serializers.DateField()
@@ -147,8 +150,8 @@ class ExperienceDeleteView(APIView):
 
         class Meta:
             ref_name = 'ExperienceDeleteOut'
-            ['id', 'company_name', 'profile_picture',
-                'start_date', 'end_date', 'title', 'description']
+            fields = ['id', 'account_id', 'company_name', 'profile_picture',
+                      'start_date', 'end_date', 'title', 'description']
 
     permission_classes = [IsAuthenticated]
 

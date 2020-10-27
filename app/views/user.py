@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 
 from app.models.user import User
 from app.services.user import (create_user, get_user,
-                                  set_profile_picture, update_user)
+                               set_profile_picture, update_user)
 
 
 class UserProfilePictureView(APIView):
@@ -74,8 +74,7 @@ class UserCreateView(APIView):
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        result = create_user(account=request.user, **
-                                serializer.validated_data)
+        result = create_user(account=request.user, **serializer.validated_data)
         return Response(self.OutputSerializer(result).data, status=status.HTTP_201_CREATED)
 
 
@@ -101,6 +100,5 @@ class UserUpdateView(APIView):
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        result = update_user(account=request.user, **
-                                serializer.validated_data)
+        result = update_user(account=request.user, **serializer.validated_data)
         return Response(self.OutputSerializer(result).data, status=status.HTTP_200_OK)
