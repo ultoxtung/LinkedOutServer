@@ -15,7 +15,7 @@ def check_interest(*, account: Account, id: int) -> bool:
         return { 'interested': False }
 
 
-def create_interest (*, account: Account, id: int) -> bool:
+def create_interest(*, account: Account, id: int) -> bool:
     p = Post.objects.filter(id=id).first()
     if not p:
         raise InvalidInputFormat("Post with id {} doesn't exist.".format(id))
@@ -28,7 +28,7 @@ def create_interest (*, account: Account, id: int) -> bool:
     return { 'interested': True }
 
 
-def delete_interest (*, account: Account, id: int) -> bool:
+def delete_interest(*, account: Account, id: int) -> bool:
     p = Post.objects.filter(id=id).first()
     if not p:
         raise InvalidInputFormat("Post with id {} doesn't exist.".format(id))
@@ -41,7 +41,7 @@ def delete_interest (*, account: Account, id: int) -> bool:
     return { 'interested': False }
 
 
-def count_interest (*, account: Account, id: int) -> dict:
+def count_interest(*, account: Account, id: int) -> dict:
     p = Post.objects.filter(id=id).first()
     if not p:
         raise InvalidInputFormat("Post with id {} doesn't exist.".format(id))
@@ -51,7 +51,7 @@ def count_interest (*, account: Account, id: int) -> dict:
     }
 
 
-def account_interested (*, account: Account, id: int) -> list:
+def account_interested(*, account: Account, id: int) -> list:
     p = Post.objects.filter(id=id).first()
     if not p:
         raise InvalidInputFormat("Post with id {} doesn't exist.".format(id))
@@ -65,7 +65,7 @@ def account_interested (*, account: Account, id: int) -> list:
     ]
 
 
-def post_interested (*, account: Account, id: int) -> list:
+def post_interested(*, account: Account, id: int) -> list:
     posts = Post.objects.filter(interested_users=get_user_with_id(id))
     return [
         {
@@ -82,6 +82,7 @@ def get_user_account(account: Account) -> User:
     if e is None:
         raise InvalidInputFormat("User not found!")
     return e
+
 
 def get_user_with_id(id: int) -> User:
     return User.objects.filter(account__id=id).first()

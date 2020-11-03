@@ -8,7 +8,6 @@ from app.exceptions import InvalidInputFormat
 from backend.settings import MEDIA_ROOT
 
 
-
 def list_post(*, id: int) -> list:
     posts = Post.objects.filter(user__account__id=id)
     return [
@@ -42,8 +41,10 @@ def create_post(*, account: Account, title: str, content: str, skills: list) -> 
 
 def update_post(*, account: Account, id: int, title: str, content: str, skills: list) -> list:
     user_account_check(account)
-    author_check(account, id)
     p = Post.objects.filter(id=id)
+    if not p:
+        raise InvalidInputFormat("Post with id {} not found".format(id))
+    author_check(account, id)
     p.update(
         title=title,
         content=content,
@@ -57,10 +58,10 @@ def update_post(*, account: Account, id: int, title: str, content: str, skills: 
 
 def delete_post(*, account: Account, id: int) -> list:
     user_account_check(account)
-    author_check(account, id)
     p = Post.objects.filter(id=id).first()
     if p is None:
         raise InvalidInputFormat("Post with id {} not found".format(id))
+    author_check(account, id)
     p.delete()
     return list_post(id=account.id)
 
@@ -87,11 +88,13 @@ def user_account_check(account: Account, raise_exception=True):
         return False
     return True
 
+
 def get_user_account(account: Account) -> User:
     p = User.objects.filter(account=account).first()
     if p is None:
         raise InvalidInputFormat("User not found!")
     return p
+
 
 def author_check(account: Account, id: int) -> bool:
     p = Post.objects.filter(id=id).first()
@@ -99,6 +102,7 @@ def author_check(account: Account, id: int) -> bool:
         raise InvalidInputFormat('Account with id {} isn\'t author of post with id {}'.format(account.id, id))
         return False
     return True
+
 
 def post_exist(id: int, raise_exception=True) -> bool:
     p = Post.objects.filter(id=id).first()

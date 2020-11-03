@@ -103,7 +103,7 @@ def password_format_check(password: str, raise_exception=True) -> bool:
 
 
 def account_type_check(account_type: str, raise_exception=True) -> bool:
-    if not account_type in ['user', 'company']:
+    if account_type not in ['user', 'company']:
         if raise_exception:
             raise InvalidInputFormat(
                 "account_type should be 'user' or 'company'.")

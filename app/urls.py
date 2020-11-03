@@ -23,6 +23,8 @@ from app.views.phone import (PhoneCreateView, PhoneDeleteView, PhoneListView,
                              PhoneUpdateView)
 from app.views.post import (PostCreateView, PostDeleteView, PostGetView,
                             PostListView, PostPictureView, PostUpdateView)
+from app.views.comment import (CommentListView, CommentCreateView,
+                               CommentDeleteView, CommentUpdateView)
 from app.views.search import SearchView
 from app.views.skill import SkillCreateView, SkillDeleteView, SkillListView
 from app.views.statistic import (JobsBySkillView, PostsBySkillView,
@@ -112,6 +114,13 @@ post_patterns = [
     path('upload', PostPictureView.as_view()),
 ]
 
+comment_patterns = [
+    path('list', CommentListView.as_view()),
+    path('create', CommentCreateView.as_view()),
+    path('update', CommentUpdateView.as_view()),
+    path('delete', CommentDeleteView.as_view()),
+]
+
 interest_patterns = [
     path('check', InterestCheckView.as_view()),
     path('create', InterestCreateView.as_view()),
@@ -154,6 +163,7 @@ urlpatterns = [
     path('job/', include((job_patterns, 'job'))),
     path('follow/', include((follow_patterns, 'follow'))),
     path('post/', include((post_patterns, 'post'))),
+    path('comment/', include((comment_patterns, 'comment'))),
     path('interest/', include((interest_patterns, 'interest'))),
     path('tag/', include((tag_patterns, 'tag'))),
     path('feed/', include((feed_patterns, 'feed'))),

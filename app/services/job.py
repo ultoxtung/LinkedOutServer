@@ -52,8 +52,10 @@ def create_job(*, account: Account, title: str, description: str, seniority_leve
 def update_job(*, account: Account, id: int, title: str, description: str, seniority_level: str,
                employment_type: str, recruitment_url: str, cities: list, skills: list) -> list:
     company_account_check(account)
-    author_check(account, id)
     j = Job.objects.filter(id=id)
+    if not j:
+        raise InvalidInputFormat("Job with id {} not found!".format(id))
+    author_check(account, id)
     j.update(
         title=title,
         description=description,
@@ -72,10 +74,10 @@ def update_job(*, account: Account, id: int, title: str, description: str, senio
 
 def delete_job(*, account: Account, id: int) -> list:
     company_account_check(account)
-    author_check(account, id)
     j = Job.objects.filter(id=id).first()
     if j is None:
-        raise InvalidInputFormat("Job entry not found!")
+        raise InvalidInputFormat("Job with id {} not found!".format(id))
+    author_check(account, id)
     j.delete()
     return list_job(id=account.id)
 
@@ -103,6 +105,7 @@ def company_account_check(account: Account, raise_exception=True):
         return False
     return True
 
+
 def get_company_account(account: Account, raise_exception=True):
     c = Company.objects.filter(account=account).first()
     if c is None:
@@ -110,12 +113,14 @@ def get_company_account(account: Account, raise_exception=True):
             raise InvalidInputFormat("Company not found!")
     return c
 
+
 def author_check(account: Account, id: int) -> bool:
     j = Job.objects.filter(id=id).first()
     if j.company != get_company_account(account):
         raise InvalidInputFormat('Account with id {} isn\'t author of job with id {}'.format(account.id, id))
         return False
     return True
+
 
 def job_exist(id: int, raise_exception=True) -> bool:
     j = Job.objects.filter(id=id).first()

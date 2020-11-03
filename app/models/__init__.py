@@ -8,6 +8,7 @@ from .experience import Experience
 from .job import Job
 from .phone import Phone
 from .post import Post
+from .comment import Comment
 from .school import School
 from .skill import Skill
 from .specialty import Specialty
@@ -16,5 +17,5 @@ from .title import Title
 from .social import Social
 
 __all__ = ['Account', 'City', 'Company', 'Education', 'Email', 'Experience',
-           'Job', 'Phone', 'Post', 'School', 'Skill', 'Specialty', 'User',
-           'Social', 'Title']
+           'Job', 'Phone', 'Post', 'Comment', 'School', 'Skill', 'Specialty',
+           'User', 'Social', 'Title']
