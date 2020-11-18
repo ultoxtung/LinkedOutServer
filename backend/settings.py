@@ -184,14 +184,14 @@ BATON = {
                 },
             )
         },
-        # { 'type': 'title', 'label': 'Contents', 'apps': ('flatpages', ) },
-        # { 'type': 'model', 'label': 'Pages', 'name': 'flatpage', 'app': 'flatpages' },
-        # { 'type': 'free', 'label': 'Relax', 'url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'perms': ('flatpages.add_flatpage', 'auth.change_user') },
-        # {'type': 'free', 'label': 'Relaxing', 'default_open': False, 'icon': 'fa fa-puzzle-piece', 'children': [
-        #     {'type': 'free', 'label': 'Tetris',
-        #         'url': 'https://tetris.com/play-tetris/'},
-        #     {'type': 'free', 'label': 'Guess what is this',
-        #         'url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'},
-        # ]},
+        { 'type': 'title', 'label': 'Contents', 'apps': ('flatpages', ) },
+        { 'type': 'model', 'label': 'Pages', 'name': 'flatpage', 'app': 'flatpages' },
+        { 'type': 'free', 'label': 'Relax', 'url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'perms': ('flatpages.add_flatpage', 'auth.change_user') },
+        {'type': 'free', 'label': 'Relaxing', 'default_open': False, 'icon': 'fa fa-puzzle-piece', 'children': [
+            {'type': 'free', 'label': 'Tetris',
+                'url': 'https://tetris.com/play-tetris/'},
+            {'type': 'free', 'label': 'Guess what is this',
+                'url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'},
+        ]},
     ),
 }

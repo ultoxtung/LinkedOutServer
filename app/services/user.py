@@ -25,9 +25,9 @@ def create_user(*, account: Account, firstname: str, lastname: str, dateofbirth:
     elif gender.lower() == "female":
         profile_picture = 'profile/user_default_female.jpg'
     elif gender.lower() == "other":
-        profile_picture = 'profile/user_default_male.jpg'
+        profile_picture = 'profile/user_default_other.jpg'
     else:
-        profile_picture = 'profile/user_default_male.jpg'
+        profile_picture = 'profile/user_default_other.jpg'
         print("Gender {} ???".format(gender))
     s = User(account=account, firstname=firstname, lastname=lastname,
              dateofbirth=dateofbirth, gender=gender, profile_picture=profile_picture, **kwargs)

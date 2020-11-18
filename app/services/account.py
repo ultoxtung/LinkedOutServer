@@ -29,6 +29,18 @@ def create_account(*, username: str, password: str, email: str, account_type: st
                       account_type=account_type)
     account.save()
     create_email(email=email, account=account)
+
+    account = Account.objects.filter(
+        username=username, password=hashed_password(password)).first()
+    access_token = generate_access_token(account)
+    return {
+        'access_token': access_token,
+        'account': {
+            'id': account.id,
+            'username': account.username,
+            'account_type': account.account_type,
+        }
+    }
     return account
 
 
