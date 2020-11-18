@@ -52,21 +52,34 @@ class RegisterView(APIView):
         account_type = serializers.CharField(required=True)
 
         class Meta:
-            ref_name = 'Register'
+            ref_name = 'RegisterIns'
             fields = ['username', 'password', 'email', 'account_type']
+
+    class OutputSerializer(serializers.Serializer):
+        access_token = serializers.CharField()
+        account = inline_serializer(fields={
+            'id': serializers.IntegerField(),
+            'username': serializers.CharField(),
+            'account_type': serializers.CharField(),
+        })
+
+        class Meta:
+            ref_name = 'RegisterOut'
+            fields = ['access_token', 'account']
 
     permission_classes = [AllowAny]
     authentication_classes = []
 
-    @swagger_auto_schema(request_body=InputSerializer, responses={201: "User created"})
+    @swagger_auto_schema(request_body=InputSerializer, responses={201: OutputSerializer})
     @method_decorator(ensure_csrf_cookie)
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        account = create_account(**serializer.validated_data)
-        if account is None:
-            return Response("User already exist", status=status.HTTP_409_CONFLICT)
-        return Response("User created", status=status.HTTP_201_CREATED)
+        user_existed, result = create_account(**serializer.validated_data)
+        if user_existed:
+            return Response(self.OutputSerializer(result).data, status=status.HTTP_409_CONFLICT)
+        else:
+            return Response(self.OutputSerializer(result).data, status=status.HTTP_201_CREATED)
 
 
 class ChangePasswordView(APIView):

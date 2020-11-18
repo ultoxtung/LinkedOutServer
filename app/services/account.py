@@ -24,24 +24,33 @@ def create_account(*, username: str, password: str, email: str, account_type: st
     account_type_check(account_type)
     account = Account.objects.filter(username=username).first()
     if account:
-        return None
-    account = Account(username=username, password=hashed_password(password),
-                      account_type=account_type)
-    account.save()
-    create_email(email=email, account=account)
-
-    account = Account.objects.filter(
-        username=username, password=hashed_password(password)).first()
-    access_token = generate_access_token(account)
-    return {
-        'access_token': access_token,
-        'account': {
-            'id': account.id,
-            'username': account.username,
-            'account_type': account.account_type,
+        user_existed = True
+        return user_existed, {
+            'access_token': '',
+            'account': {
+                'id': 0,
+                'username': '',
+                'account_type': '',
+            }
         }
-    }
-    return account
+    else:
+        user_existed = False
+        account = Account(username=username, password=hashed_password(password),
+                          account_type=account_type)
+        account.save()
+        create_email(email=email, account=account)
+
+        account = Account.objects.filter(
+            username=username, password=hashed_password(password)).first()
+        access_token = generate_access_token(account)
+        return user_existed, {
+            'access_token': access_token,
+            'account': {
+                'id': account.id,
+                'username': account.username,
+                'account_type': account.account_type,
+            }
+        }
 
 
 def login(*, username: str, password: str) -> dict:
