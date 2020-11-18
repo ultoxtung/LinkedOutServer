@@ -77,7 +77,7 @@ class RegisterView(APIView):
         serializer.is_valid(raise_exception=True)
         user_existed, result = create_account(**serializer.validated_data)
         if user_existed:
-            return Response(self.OutputSerializer(result).data, status=status.HTTP_409_CONFLICT)
+            return Response({'details': 'User already exist.'}, status=status.HTTP_409_CONFLICT)
         else:
             return Response(self.OutputSerializer(result).data, status=status.HTTP_201_CREATED)
 
