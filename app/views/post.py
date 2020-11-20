@@ -8,23 +8,8 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import MultiPartParser
 from rest_framework.exceptions import ParseError
 
-from app.models.skill import Skill
 from app.models.post import Post
 from app.services.post import list_post, get_post, create_post, update_post, delete_post, set_post_picture
-
-
-class SkillRelatedField(serializers.RelatedField):
-    def display_value(self, instance):
-        return instance
-
-    def to_representation(self, value):
-        return str(value)
-
-    def to_internal_value(self, data):
-        try:
-            return Skill.objects.get(name=data)
-        except:
-            raise ParseError('Skill doesn\'t exist')
 
 
 class PostListView(APIView):
@@ -36,12 +21,11 @@ class PostListView(APIView):
             fields = ['id']
 
     class OutputSerializer(serializers.ModelSerializer):
-        skills = SkillRelatedField(queryset=Skill.objects.all(), many=True)
-
         class Meta:
             model = Post
             ref_name = 'PostListOut'
-            fields = ['id', 'title', 'content', 'published_date', 'post_picture', 'skills']
+            fields = ['id', 'title', 'content',
+                      'published_date', 'post_picture']
 
     permission_classes = [AllowAny]
     authentication_classes = []
@@ -64,12 +48,11 @@ class PostGetView(APIView):
             fields = ['id']
 
     class OutputSerializer(serializers.ModelSerializer):
-        skills = SkillRelatedField(queryset=Skill.objects.all(), many=True)
-
         class Meta:
             model = Post
             ref_name = 'PostGetOut'
-            fields = ['id', 'title', 'content', 'published_date', 'post_picture', 'skills']
+            fields = ['id', 'title', 'content',
+                      'published_date', 'post_picture']
 
     permission_classes = [AllowAny]
     authentication_classes = []
@@ -85,20 +68,17 @@ class PostGetView(APIView):
 
 class PostCreateView(APIView):
     class InputSerializer(serializers.ModelSerializer):
-        skills = SkillRelatedField(queryset=Skill.objects.all(), many=True)
-
         class Meta:
             model = Post
             ref_name = 'PostCreateIn'
-            fields = ['title', 'content', 'skills']
+            fields = ['title', 'content']
 
     class OutputSerializer(serializers.ModelSerializer):
-        skills = SkillRelatedField(queryset=Skill.objects.all(), many=True)
-
         class Meta:
             model = Post
             ref_name = 'PostCreateOut'
-            fields = ['id', 'title', 'content', 'published_date', 'post_picture', 'skills']
+            fields = ['id', 'title', 'content',
+                      'published_date', 'post_picture']
 
     permission_classes = [IsAuthenticated]
 
@@ -114,20 +94,18 @@ class PostCreateView(APIView):
 class PostUpdateView(APIView):
     class InputSerializer(serializers.ModelSerializer):
         id = serializers.IntegerField(required=True)
-        skills = SkillRelatedField(queryset=Skill.objects.all(), many=True)
 
         class Meta:
             model = Post
             ref_name = 'PostUpdateIn'
-            fields = ['id', 'title', 'content', 'skills']
+            fields = ['id', 'title', 'content']
 
     class OutputSerializer(serializers.ModelSerializer):
-        skills = SkillRelatedField(queryset=Skill.objects.all(), many=True)
-
         class Meta:
             model = Post
             ref_name = 'PostCreateOut'
-            fields = ['id', 'title', 'content', 'published_date', 'post_picture', 'skills']
+            fields = ['id', 'title', 'content',
+                      'published_date', 'post_picture']
 
     permission_classes = [IsAuthenticated]
 
@@ -149,12 +127,11 @@ class PostDeleteView(APIView):
             fields = ['id']
 
     class OutputSerializer(serializers.ModelSerializer):
-        skills = SkillRelatedField(queryset=Skill.objects.all(), many=True)
-
         class Meta:
             model = Post
             ref_name = 'PostCreateOut'
-            fields = ['id', 'title', 'content', 'published_date', 'post_picture', 'skills']
+            fields = ['id', 'title', 'content',
+                      'published_date', 'post_picture']
 
     permission_classes = [IsAuthenticated]
 
@@ -173,7 +150,8 @@ class PostPictureView(APIView):
 
     def post(self, request):
         try:
-            set_post_picture(request.user, request.data['id'], request.data['file'])
+            set_post_picture(
+                request.user, request.data['id'], request.data['file'])
         except KeyError:
             raise ParseError("'file' and/or 'id' field missing.")
         return Response("Uploaded.", status=status.HTTP_201_CREATED)

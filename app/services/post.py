@@ -17,7 +17,6 @@ def list_post(*, id: int) -> list:
             'content': p.content,
             'published_date': p.published_date,
             'post_picture': p.post_picture,
-            'skills': p.skills,
         } for p in posts
     ]
 
@@ -26,7 +25,7 @@ def get_post(*, id: int) -> Post:
     return Post.objects.filter(id=id).first()
 
 
-def create_post(*, account: Account, title: str, content: str, skills: list) -> list:
+def create_post(*, account: Account, title: str, content: str) -> list:
     user_account_check(account)
     p = Post(
         user=get_user_account(account),
@@ -35,11 +34,10 @@ def create_post(*, account: Account, title: str, content: str, skills: list) -> 
         published_date=date.today()
     )
     p.save()
-    p.skills.add(*skills)
     return list_post(id=account.id)
 
 
-def update_post(*, account: Account, id: int, title: str, content: str, skills: list) -> list:
+def update_post(*, account: Account, id: int, title: str, content: str) -> list:
     user_account_check(account)
     p = Post.objects.filter(id=id)
     if not p:
@@ -50,8 +48,6 @@ def update_post(*, account: Account, id: int, title: str, content: str, skills: 
         content=content,
         published_date=date.today()
     )
-    p.first().skills.clear()
-    p.first().skills.add(*skills)
 
     return list_post(id=account.id)
 
@@ -84,7 +80,8 @@ def set_post_picture(account: Account, id: int, file_instance):
 def user_account_check(account: Account, raise_exception=True):
     if account.account_type != 'user':
         if raise_exception:
-            raise InvalidInputFormat('Account {} is not a user account.'.format(account.id))
+            raise InvalidInputFormat(
+                'Account {} is not a user account.'.format(account.id))
         return False
     return True
 
@@ -99,7 +96,8 @@ def get_user_account(account: Account) -> User:
 def author_check(account: Account, id: int) -> bool:
     p = Post.objects.filter(id=id).first()
     if p.user != get_user_account(account):
-        raise InvalidInputFormat('Account with id {} isn\'t author of post with id {}'.format(account.id, id))
+        raise InvalidInputFormat(
+            'Account with id {} isn\'t author of post with id {}'.format(account.id, id))
         return False
     return True
 
