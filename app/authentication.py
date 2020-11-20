@@ -25,19 +25,21 @@ class JWTAuthentication(BaseAuthentication):
     """
 
     def authenticate(self, request):
-        authorization_heaader = request.headers.get('Authorization')
+        authorization_header = request.headers.get('Authorization')
 
-        if not authorization_heaader:
+        if not authorization_header:
             return None
 
         try:
-            access_token = authorization_heaader.split(' ')[1]
+            access_token = authorization_header.split(' ')[1]
             payload = jwt.decode(access_token, SECRET_KEY,
                                  algorithms=['HS256'])
 
         except jwt.ExpiredSignatureError:
+            print('access_token expired.')
             raise exceptions.AuthenticationFailed('access_token expired.')
         except IndexError:
+            print('Token prefix missing.')
             raise exceptions.AuthenticationFailed('Token prefix missing.')
         except Exception as exc:
             print(exc)
@@ -45,6 +47,7 @@ class JWTAuthentication(BaseAuthentication):
 
         account = Account.objects.get(id=payload['user_id'])
         if account is None:
+            print('User not found.')
             raise exceptions.AuthenticationFailed('User not found.')
 
         # self.enforce_csrf(request)
@@ -61,4 +64,5 @@ class JWTAuthentication(BaseAuthentication):
         print(reason)
         if reason:
             # CSRF failed, bail with explicit error message
+            print('CSRF failed')
             raise exceptions.PermissionDenied('CSRF Failed: %s' % reason)
