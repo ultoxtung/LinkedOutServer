@@ -26,15 +26,3 @@ def jobs_by_skill() -> list:
         for s in skill_list if Job.objects.filter(skills=s).count() != 0
     ]
     return sorted(res, key=lambda x: x['name'], reverse=True)
-
-
-def posts_by_skill() -> list:
-    skill_list = Skill.objects.all()
-    res = [
-        {
-            'name': s.name,
-            'count': Post.objects.filter(skills=s).count()
-        }
-        for s in skill_list if Post.objects.filter(skills=s).count() != 0
-    ]
-    return sorted(res, key=lambda x: x['name'], reverse=True)

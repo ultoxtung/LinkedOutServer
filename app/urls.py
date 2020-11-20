@@ -27,8 +27,7 @@ from app.views.comment import (CommentListView, CommentCreateView,
                                CommentDeleteView, CommentUpdateView)
 from app.views.search import SearchView
 from app.views.skill import SkillCreateView, SkillDeleteView, SkillListView
-from app.views.statistic import (JobsBySkillView, PostsBySkillView,
-                                 UsersBySkillView)
+from app.views.statistic import (JobsBySkillView, UsersBySkillView)
 from app.views.user import (UserCreateView, UserGetView,
                             UserProfilePictureView, UserUpdateView)
 from app.views.tag import (CompanyTagView, LocationTagView, SchoolTagView,
@@ -148,7 +147,6 @@ feed_patterns = [
 statistic_patterns = [
     path('users-by-skill', UsersBySkillView.as_view()),
     path('jobs-by-skill', JobsBySkillView.as_view()),
-    path('posts-by-skill', PostsBySkillView.as_view()),
 ]
 
 urlpatterns = [
