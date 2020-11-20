@@ -11,7 +11,6 @@ def store_picture(instance, filename: str) -> str:
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=64)
     content = models.TextField(max_length=1024)
     published_date = models.DateField(auto_now_add=True)
     post_picture = models.ImageField(

@@ -24,7 +24,7 @@ class PostListView(APIView):
         class Meta:
             model = Post
             ref_name = 'PostListOut'
-            fields = ['id', 'title', 'content',
+            fields = ['id', 'content',
                       'published_date', 'post_picture']
 
     permission_classes = [AllowAny]
@@ -51,7 +51,7 @@ class PostGetView(APIView):
         class Meta:
             model = Post
             ref_name = 'PostGetOut'
-            fields = ['id', 'title', 'content',
+            fields = ['id', 'content',
                       'published_date', 'post_picture']
 
     permission_classes = [AllowAny]
@@ -71,13 +71,13 @@ class PostCreateView(APIView):
         class Meta:
             model = Post
             ref_name = 'PostCreateIn'
-            fields = ['title', 'content']
+            fields = ['content']
 
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
             model = Post
             ref_name = 'PostCreateOut'
-            fields = ['id', 'title', 'content',
+            fields = ['id', 'content',
                       'published_date', 'post_picture']
 
     permission_classes = [IsAuthenticated]
@@ -98,13 +98,13 @@ class PostUpdateView(APIView):
         class Meta:
             model = Post
             ref_name = 'PostUpdateIn'
-            fields = ['id', 'title', 'content']
+            fields = ['id', 'content']
 
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
             model = Post
             ref_name = 'PostCreateOut'
-            fields = ['id', 'title', 'content',
+            fields = ['id', 'content',
                       'published_date', 'post_picture']
 
     permission_classes = [IsAuthenticated]
@@ -130,7 +130,7 @@ class PostDeleteView(APIView):
         class Meta:
             model = Post
             ref_name = 'PostCreateOut'
-            fields = ['id', 'title', 'content',
+            fields = ['id', 'content',
                       'published_date', 'post_picture']
 
     permission_classes = [IsAuthenticated]

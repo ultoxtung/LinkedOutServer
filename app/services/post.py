@@ -13,7 +13,6 @@ def list_post(*, id: int) -> list:
     return [
         {
             'id': p.id,
-            'title': p.title,
             'content': p.content,
             'published_date': p.published_date,
             'post_picture': p.post_picture,
@@ -25,11 +24,10 @@ def get_post(*, id: int) -> Post:
     return Post.objects.filter(id=id).first()
 
 
-def create_post(*, account: Account, title: str, content: str) -> list:
+def create_post(*, account: Account, content: str) -> list:
     user_account_check(account)
     p = Post(
         user=get_user_account(account),
-        title=title,
         content=content,
         published_date=date.today()
     )
@@ -37,14 +35,13 @@ def create_post(*, account: Account, title: str, content: str) -> list:
     return list_post(id=account.id)
 
 
-def update_post(*, account: Account, id: int, title: str, content: str) -> list:
+def update_post(*, account: Account, id: int, content: str) -> list:
     user_account_check(account)
     p = Post.objects.filter(id=id)
     if not p:
         raise InvalidInputFormat("Post with id {} not found".format(id))
     author_check(account, id)
     p.update(
-        title=title,
         content=content,
         published_date=date.today()
     )
