@@ -6,7 +6,7 @@ from .custom.timestamp import UnixTimestampField
 
 def store_picture(instance, filename: str) -> str:
     extension = filename.split('.')[-1]
-    return "post_" + "{}.{}".format(instance.id, extension)
+    return "post/post_" + "{}.{}".format(instance.id, extension)
 
 
 class Post(models.Model):
