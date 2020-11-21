@@ -3,6 +3,7 @@ from django.db import models
 from .company import Company
 from .city import City
 from .skill import Skill
+from app.utils import UnixTimestampField
 
 
 def store_picture(instance, filename: str) -> str:
@@ -16,7 +17,7 @@ class Job(models.Model):
     description = models.TextField()
     seniority_level = models.CharField(max_length=32)
     employment_type = models.CharField(max_length=32)  # full-time or part-time
-    published_date = models.DateField()
+    published_date = UnixTimestampField(auto_created=True)
     recruitment_url = models.CharField(max_length=1024, default='#')
     job_picture = models.ImageField(
         upload_to=store_picture, default='job/default.jpg')

@@ -1,5 +1,4 @@
 import os
-from datetime import date
 
 from app.exceptions import InvalidInputFormat
 from app.models.account import Account
@@ -40,7 +39,6 @@ def create_job(*, account: Account, title: str, description: str, seniority_leve
         seniority_level=seniority_level,
         employment_type=employment_type,
         recruitment_url=recruitment_url,
-        published_date=date.today()
     )
     j.save()
     j.cities.add(*cities)
@@ -62,7 +60,6 @@ def update_job(*, account: Account, id: int, title: str, description: str, senio
         seniority_level=seniority_level,
         employment_type=employment_type,
         recruitment_url=recruitment_url,
-        published_date=date.today()
     )
     j.first().cities.clear()
     j.first().cities.add(*cities)

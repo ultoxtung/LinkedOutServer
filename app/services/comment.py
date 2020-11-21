@@ -1,12 +1,8 @@
-import os
-from datetime import date
-
 from app.models.post import Post
 from app.models.comment import Comment
 from app.models.user import User
 from app.models.account import Account
 from app.exceptions import InvalidInputFormat
-from backend.settings import MEDIA_ROOT
 
 
 def list_comment(*, id: int) -> list:
@@ -19,7 +15,6 @@ def create_comment(*, account: Account, id: int, content: str) -> list:
         user=get_user_account(account),
         post=get_post(id),
         content=content,
-        published_date=date.today()
     )
     c.save()
     return list_comment(id=id)
@@ -33,7 +28,6 @@ def update_comment(*, account: Account, id: int, content: str) -> list:
     author_check(account, id)
     c.update(
         content=content,
-        published_date=date.today()
     )
     post_id = c.first().post.id
     return list_comment(id=post_id)

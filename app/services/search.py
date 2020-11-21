@@ -26,8 +26,7 @@ def search(*, type: str, **kwargs) -> list:
         )
     elif type == 'post':
         return post_search(
-            (kwargs.get('query') or '') if ('query' in kwargs) else '',
-            (kwargs.get('skills') or '') if ('skills' in kwargs) else ''
+            (kwargs.get('query') or '') if ('query' in kwargs) else ''
         )
     else:
         raise InvalidInputFormat("Invalid search type!")
@@ -68,11 +67,7 @@ def job_search(query: str, skills: str) -> list:
     return list(jobs_ct)
 
 
-def post_search(query: str, skills: str) -> list:
-    if skills == '':
-        posts_ct = Post.objects.filter(title__icontains=query).order_by('-published_date')
-    else:
-        skill_list = skills.split(',')
-        posts_ct = Post.objects.filter(title__icontains=query, skills__name__in=skill_list).annotate(num_attr=Count('skills')).filter(num_attr=len(skill_list)).order_by('-published_date')
+def post_search(query: str) -> list:
+    posts_ct = Post.objects.filter(content__icontains=query).order_by('-published_date')
 
     return list(posts_ct)

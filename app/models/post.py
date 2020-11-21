@@ -1,7 +1,7 @@
 from django.db import models
 
 from .user import User
-from .custom.timestamp import UnixTimestampField
+from app.utils import UnixTimestampField
 
 
 def store_picture(instance, filename: str) -> str:
@@ -12,7 +12,7 @@ def store_picture(instance, filename: str) -> str:
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(max_length=1024)
-    published_date = models.DateField(auto_now_add=True)
+    published_date = UnixTimestampField(auto_created=True)
     post_picture = models.ImageField(
         upload_to=store_picture, default='post/default.jpg')
     interested_users = models.ManyToManyField(
