@@ -1,21 +1,22 @@
 # Add all model classes here
 from .account import Account
 from .city import City
+from .comment import Comment
 from .company import Company
 from .education import Education
 from .email import Email
 from .experience import Experience
+from .follow import Follow
 from .job import Job
 from .phone import Phone
 from .post import Post
-from .comment import Comment
 from .school import School
 from .skill import Skill
-from .specialty import Specialty
-from .user import User
-from .title import Title
 from .social import Social
+from .specialty import Specialty
+from .title import Title
+from .user import User
 
-__all__ = ['Account', 'City', 'Company', 'Education', 'Email', 'Experience',
-           'Job', 'Phone', 'Post', 'Comment', 'School', 'Skill', 'Specialty',
-           'User', 'Social', 'Title']
+__all__ = ['Account', 'City', 'Comment', 'Company', 'Education', 'Email',
+           'Experience', 'Follow', 'Job', 'Phone', 'Post', 'School', 'Skill',
+           'Social', 'Specialty', 'Title', 'User']

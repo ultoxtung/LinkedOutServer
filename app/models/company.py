@@ -3,7 +3,6 @@ from django.db import models
 
 from .account import Account
 from .specialty import Specialty
-from .user import User
 
 
 def store_picture(instance, filename: str) -> str:

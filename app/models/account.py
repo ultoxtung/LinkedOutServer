@@ -9,3 +9,6 @@ class Account(models.Model):
     @property
     def is_authenticated(self):
         return True
+
+    def __str__(self):
+        return str(self.id) + ' - ' + self.account_type + ' | ' + self.username
