@@ -82,13 +82,13 @@ class PostCreateView(APIView):
 
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(request_body=InputSerializer, responses={201: OutputSerializer(many=True)})
+    @swagger_auto_schema(request_body=InputSerializer, responses={201: OutputSerializer()})
     @method_decorator(ensure_csrf_cookie)
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = create_post(account=request.user, **serializer.validated_data)
-        return Response(self.OutputSerializer(result, many=True).data, status=status.HTTP_201_CREATED)
+        return Response(self.OutputSerializer(result).data, status=status.HTTP_201_CREATED)
 
 
 class PostUpdateView(APIView):

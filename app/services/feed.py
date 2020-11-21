@@ -21,10 +21,7 @@ def get_feed(*, account: Account) -> list:
     sid = []
     [sid.append(s.id) for s in already_have_skills]
     not_have_skills = Skill.objects.exclude(id__in=sid)
-    post_list = Post.objects.filter(
-        skills__in=already_have_skills).order_by('-published_date')
-    post_list = post_list.exclude(
-        skills__in=not_have_skills).order_by('-published_date')
+    post_list = Post.objects.all().order_by('-published_date')
 
     feed = list(sorted(chain(job_list, post_list),
                        key=lambda instance: instance.published_date, reverse=True))

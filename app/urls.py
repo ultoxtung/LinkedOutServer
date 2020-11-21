@@ -11,7 +11,7 @@ from app.views.experience import (ExperienceCreateView, ExperienceDeleteView,
                                   ExperienceListView, ExperienceUpdateView)
 from app.views.feed import (FeedGetView, FeedSuggestFollowView,
                             FeedSuggestJobView)
-from app.views.follow import (CompanyFollowedView, FollowCheckView,
+from app.views.follow import (FollowListView, UserFollowedView, CompanyFollowedView, FollowCheckView,
                               FollowCountView, FollowCreateView,
                               FollowDeleteView)
 from app.views.interest import (AccountInterestedView, InterestCheckView,
@@ -27,8 +27,7 @@ from app.views.comment import (CommentListView, CommentCreateView,
                                CommentDeleteView, CommentUpdateView)
 from app.views.search import SearchView
 from app.views.skill import SkillCreateView, SkillDeleteView, SkillListView
-from app.views.statistic import (JobsBySkillView, PostsBySkillView,
-                                 UsersBySkillView)
+from app.views.statistic import (JobsBySkillView, UsersBySkillView)
 from app.views.user import (UserCreateView, UserGetView,
                             UserProfilePictureView, UserUpdateView)
 from app.views.tag import (CompanyTagView, LocationTagView, SchoolTagView,
@@ -98,11 +97,13 @@ job_patterns = [
 ]
 
 follow_patterns = [
-    path('check', FollowCheckView.as_view()),
-    path('create', FollowCreateView.as_view()),
-    path('delete', FollowDeleteView.as_view()),
-    path('count', FollowCountView.as_view()),
-    path('company-followed', CompanyFollowedView.as_view()),
+    path('list', FollowListView.as_view()),
+    path('check', FollowCheckView.as_view()),  # get
+    path('create', FollowCreateView.as_view()),  # post
+    path('delete', FollowDeleteView.as_view()),  # post
+    path('count', FollowCountView.as_view()),  # get
+    path('company-followed', CompanyFollowedView.as_view()),  # get
+    path('user-followed', UserFollowedView.as_view()),  # get
 ]
 
 post_patterns = [
@@ -148,7 +149,6 @@ feed_patterns = [
 statistic_patterns = [
     path('users-by-skill', UsersBySkillView.as_view()),
     path('jobs-by-skill', JobsBySkillView.as_view()),
-    path('posts-by-skill', PostsBySkillView.as_view()),
 ]
 
 urlpatterns = [

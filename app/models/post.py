@@ -1,4 +1,5 @@
 from django.db import models
+import time
 
 from .user import User
 from app.utils import UnixTimestampField
@@ -6,7 +7,7 @@ from app.utils import UnixTimestampField
 
 def store_picture(instance, filename: str) -> str:
     extension = filename.split('.')[-1]
-    return "post_" + "{}.{}".format(instance.id, extension)
+    return "post/post_" + "{}.{}".format(instance.id, extension)
 
 
 class Post(models.Model):

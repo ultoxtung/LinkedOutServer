@@ -2,80 +2,104 @@ from app.exceptions import InvalidInputFormat
 from app.models.account import Account
 from app.models.company import Company
 from app.models.user import User
+from app.models.follow import Follow
+
+
+def list_follow(*, account: Account, id: int) -> list:
+    a = Account.objects.filter(id=id).first()
+    if not a:
+        raise InvalidInputFormat(
+            "Account with id {} doesn't exist.".format(id))
+    follows = Follow.objects.filter(receiver__id=id)
+    accounts = [f.sender for f in follows]
+    print(accounts)
+    users = [User.objects.filter(account=a).first() for a in accounts]
+    return [
+        {
+            'id': u.account.id,
+            'firstname': u.firstname,
+            'lastname': u.lastname,
+            'profile_picture': u.profile_picture,
+            'description': u.description,
+            'followed_count': Follow.objects.filter(receiver=u.account).count(),
+        } for u in users
+    ]
 
 
 def check_follow(*, account: Account, id: int) -> bool:
-    c = Company.objects.filter(account__id=id).first()
-    if not c:
+    a = Account.objects.filter(id=id).first()
+    if not a:
         raise InvalidInputFormat(
-            "Company with id {} doesn't exist.".format(id))
-        return {'followed': False}
-    else:
-        if c.followers.filter(account=account).exists():
-            return {'followed': True}
-        return {'followed': False}
+            "Account with id {} doesn't exist.".format(id))
+    if Follow.objects.filter(sender=account, receiver=a).exists():
+        return {'followed': True}
+    return {'followed': False}
 
 
 def create_follow(*, account: Account, id: int) -> bool:
-    c = Company.objects.filter(account__id=id).first()
-    if not c:
+    a = Account.objects.filter(id=id).first()
+    if not a:
         raise InvalidInputFormat(
-            "Company with id {} doesn't exist.".format(id))
-        return {'followed': False}
+            "Account with id {} doesn't exist.".format(id))
 
-    user_account = get_user_account(account)
-    if c.followers.filter(account=account).exists():
+    if Follow.objects.filter(sender=account, receiver=a).exists():
         raise InvalidInputFormat(
-            "User with id {} already followed comp. with id {}.".format(account.id, id))
-    c.followers.add(user_account)
+            "Account with id {} already followed account with id {}.".format(account.id, id))
+    new_follow = Follow(sender=account, receiver=a).save()
     return {'followed': True}
 
 
 def delete_follow(*, account: Account, id: int) -> bool:
-    c = Company.objects.filter(account_id=id).first()
-    if not c:
+    a = Account.objects.filter(id=id).first()
+    if not a:
         raise InvalidInputFormat(
-            "Company with id {} doesn't exist.".format(id))
-        return {'followed': False}
+            "Account with id {} doesn't exist.".format(id))
 
-    user_account = get_user_account(account)
-    if not c.followers.filter(account=account).exists():
+    f = Follow.objects.filter(sender=account, receiver=a)
+    if not f:
         raise InvalidInputFormat(
-            "User with id {} hasn't followed comp. with id {} yet.".format(account.id, id))
-    c.followers.remove(user_account)
+            "Account with id {} has not followed account with id {} yet.".format(account.id, id))
+    f.delete()
     return {'followed': False}
 
 
 def count_follow(*, account: Account, id: int) -> dict:
-    c = Company.objects.filter(account__id=id).first()
-    if not c:
+    a = Account.objects.filter(id=id).first()
+    if not a:
         raise InvalidInputFormat(
-            "Company with id {} doesn't exist.".format(id))
-        return {'count': 0}
+            "Account with id {} doesn't exist.".format(id))
     return {
-        'count': c.followers.count()
+        'count': Follow.objects.filter(receiver=a).count()
     }
 
 
 def company_followed(*, account: Account, id: int) -> list:
-    companies = Company.objects.filter(followers=get_user_with_id(id))
+    accounts = Follow.objects.filter(
+        sender__id=id, receiver__account_type='company')
+    companies = [Company.objects.filter(account=a).first() for a in accounts]
     return [
         {
             'id': c.account.id,
             'name': c.name,
             'profile_picture': c.profile_picture,
             'description': c.description,
-            'followed_count': c.followers.count(),
+            'followed_count': Follow.objects.filter(receiver=c.account),
         } for c in companies
     ]
 
 
-def get_user_account(account: Account) -> User:
-    e = User.objects.filter(account=account).first()
-    if e is None:
-        raise InvalidInputFormat("User not found!")
-    return e
-
-
-def get_user_with_id(id: int) -> User:
-    return User.objects.filter(account__id=id).first()
+def user_followed(*, account: Account, id: int) -> list:
+    follows = Follow.objects.filter(
+        sender__id=id, receiver__account_type='user')
+    accounts = [f.receiver for f in follows]
+    users = [User.objects.filter(account=a).first() for a in accounts]
+    return [
+        {
+            'id': u.account.id,
+            'firstname': u.firstname,
+            'lastname': u.lastname,
+            'profile_picture': u.profile_picture,
+            'description': u.description,
+            'followed_count': Follow.objects.filter(receiver=u.account).count(),
+        } for u in users
+    ]

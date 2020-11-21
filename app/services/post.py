@@ -30,7 +30,7 @@ def create_post(*, account: Account, content: str) -> list:
         content=content,
     )
     p.save()
-    return list_post(id=account.id)
+    return p
 
 
 def update_post(*, account: Account, id: int, content: str) -> list:

@@ -47,7 +47,8 @@ def delete_comment(*, account: Account, id: int) -> list:
 def user_account_check(account: Account, raise_exception=True):
     if account.account_type != 'user':
         if raise_exception:
-            raise InvalidInputFormat('Account {} is not a user account.'.format(account.id))
+            raise InvalidInputFormat(
+                'Account {} is not a user account.'.format(account.id))
         return False
     return True
 
@@ -69,6 +70,7 @@ def get_post(id: int) -> Post:
 def author_check(account: Account, id: int) -> bool:
     c = Comment.objects.filter(id=id).first()
     if c.user != get_user_account(account):
-        raise InvalidInputFormat('Account with id {} isn\'t author of comment with id {}'.format(account.id, id))
+        raise InvalidInputFormat(
+            'Account with id {} isn\'t author of comment with id {}'.format(account.id, id))
         return False
     return True

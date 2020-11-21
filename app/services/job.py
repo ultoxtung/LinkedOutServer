@@ -114,7 +114,8 @@ def get_company_account(account: Account, raise_exception=True):
 def author_check(account: Account, id: int) -> bool:
     j = Job.objects.filter(id=id).first()
     if j.company != get_company_account(account):
-        raise InvalidInputFormat('Account with id {} isn\'t author of job with id {}'.format(account.id, id))
+        raise InvalidInputFormat(
+            'Account with id {} isn\'t author of job with id {}'.format(account.id, id))
         return False
     return True
 

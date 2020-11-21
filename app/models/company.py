@@ -18,7 +18,4 @@ class Company(models.Model):
     description = models.TextField(null=True)
     profile_picture = models.ImageField(
         upload_to=store_picture, default='profile/company_default.jpg')
-
-    followers = models.ManyToManyField(
-        User, related_name='company_followed')
     specialties = models.ManyToManyField(Specialty)
