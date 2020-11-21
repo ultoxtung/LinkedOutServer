@@ -2,7 +2,7 @@ from django.db import models
 
 from .user import User
 from .post import Post
-from app.utils import UnixTimestampField
+from .custom.timestamp import UnixTimestampField
 
 
 class Comment(models.Model):

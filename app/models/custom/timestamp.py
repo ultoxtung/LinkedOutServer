@@ -32,7 +32,7 @@ class UnixTimestampField(models.DateTimeField):
             return models.DateTimeField.to_python(self, value)
 
     def get_db_prep_value(self, value, connection, prepared=False):
-        if value == None:
+        if value is None:
             return None
         # Use '%Y%m%d%H%M%S' for MySQL < 4.1
         return strftime('%Y-%m-%d %H:%M:%S', value.timetuple())

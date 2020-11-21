@@ -1,8 +1,7 @@
 from django.db import models
-import time
 
 from .user import User
-from app.utils import UnixTimestampField
+from .custom.timestamp import UnixTimestampField
 
 
 def store_picture(instance, filename: str) -> str:

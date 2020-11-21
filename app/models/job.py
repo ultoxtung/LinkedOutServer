@@ -3,7 +3,7 @@ from django.db import models
 from .company import Company
 from .city import City
 from .skill import Skill
-from app.utils import UnixTimestampField
+from .custom.timestamp import UnixTimestampField
 
 
 def store_picture(instance, filename: str) -> str:
