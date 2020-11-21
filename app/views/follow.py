@@ -6,7 +6,42 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 
-from app.services.follow import check_follow, create_follow, delete_follow, count_follow, company_followed
+from app.services.follow import list_follow, check_follow, create_follow, delete_follow, count_follow, company_followed, user_followed
+
+
+class FollowListView(APIView):
+    class InputSerializer(serializers.Serializer):
+        id = serializers.IntegerField(required=True)
+
+        class Meta:
+            ref_name = 'FollowListIn'
+            fields = ['id']
+
+    class OutputSerializer(serializers.Serializer):
+        id = serializers.IntegerField()
+        firstname = serializers.CharField()
+        lastname = serializers.CharField()
+        profile_picture = serializers.ImageField()
+        description = serializers.CharField()
+        followed_count = serializers.IntegerField()
+
+        class Meta:
+            ref_name = 'FollowListOut'
+            fields = ['id', 'firstname', 'lastname',
+                      'profile_picture', 'description', 'followed_count']
+
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    @swagger_auto_schema(query_serializer=InputSerializer, responses={200: OutputSerializer(many=True)})
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request):
+        serializer = self.InputSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        result = list_follow(
+            account=request.user, **serializer.validated_data)
+        return Response(self.OutputSerializer(result, many=True).data, status=status.HTTP_200_OK)
 
 
 class FollowCheckView(APIView):
@@ -135,7 +170,8 @@ class CompanyFollowedView(APIView):
 
         class Meta:
             ref_name = 'CompanyFollowedOut'
-            fields = ['id', 'name', 'profile_picture', 'description', 'followed_count']
+            fields = ['id', 'name', 'profile_picture',
+                      'description', 'followed_count']
 
     # permission_classes = [IsAuthenticated]
     permission_classes = [AllowAny]
@@ -147,5 +183,40 @@ class CompanyFollowedView(APIView):
         serializer = self.InputSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
         result = company_followed(
+            account=request.user, **serializer.validated_data)
+        return Response(self.OutputSerializer(result, many=True).data, status=status.HTTP_200_OK)
+
+
+class UserFollowedView(APIView):
+    class InputSerializer(serializers.Serializer):
+        id = serializers.IntegerField(required=True)
+
+        class Meta:
+            ref_name = 'UserFollowedIn'
+            fields = ['id']
+
+    class OutputSerializer(serializers.Serializer):
+        id = serializers.IntegerField()
+        firstname = serializers.CharField()
+        lastname = serializers.CharField()
+        profile_picture = serializers.ImageField()
+        description = serializers.CharField()
+        followed_count = serializers.IntegerField()
+
+        class Meta:
+            ref_name = 'UserFollowedOut'
+            fields = ['id', 'firstname', 'lastname',
+                      'profile_picture', 'description', 'followed_count']
+
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    @swagger_auto_schema(query_serializer=InputSerializer, responses={200: OutputSerializer(many=True)})
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request):
+        serializer = self.InputSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        result = user_followed(
             account=request.user, **serializer.validated_data)
         return Response(self.OutputSerializer(result, many=True).data, status=status.HTTP_200_OK)

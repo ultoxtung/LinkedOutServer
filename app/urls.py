@@ -11,7 +11,7 @@ from app.views.experience import (ExperienceCreateView, ExperienceDeleteView,
                                   ExperienceListView, ExperienceUpdateView)
 from app.views.feed import (FeedGetView, FeedSuggestFollowView,
                             FeedSuggestJobView)
-from app.views.follow import (CompanyFollowedView, FollowCheckView,
+from app.views.follow import (FollowListView, UserFollowedView, CompanyFollowedView, FollowCheckView,
                               FollowCountView, FollowCreateView,
                               FollowDeleteView)
 from app.views.interest import (AccountInterestedView, InterestCheckView,
@@ -97,11 +97,13 @@ job_patterns = [
 ]
 
 follow_patterns = [
-    path('check', FollowCheckView.as_view()),
-    path('create', FollowCreateView.as_view()),
-    path('delete', FollowDeleteView.as_view()),
-    path('count', FollowCountView.as_view()),
-    path('company-followed', CompanyFollowedView.as_view()),
+    path('list', FollowListView.as_view()),
+    path('check', FollowCheckView.as_view()),  # get
+    path('create', FollowCreateView.as_view()),  # post
+    path('delete', FollowDeleteView.as_view()),  # post
+    path('count', FollowCountView.as_view()),  # get
+    path('company-followed', CompanyFollowedView.as_view()),  # get
+    path('user-followed', UserFollowedView.as_view()),  # get
 ]
 
 post_patterns = [

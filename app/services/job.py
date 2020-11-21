@@ -1,5 +1,5 @@
 import os
-from datetime import date
+import time
 
 from app.exceptions import InvalidInputFormat
 from app.models.account import Account
@@ -40,7 +40,7 @@ def create_job(*, account: Account, title: str, description: str, seniority_leve
         seniority_level=seniority_level,
         employment_type=employment_type,
         recruitment_url=recruitment_url,
-        published_date=date.today()
+        published_date=int(time.time())
     )
     j.save()
     j.cities.add(*cities)
@@ -62,7 +62,7 @@ def update_job(*, account: Account, id: int, title: str, description: str, senio
         seniority_level=seniority_level,
         employment_type=employment_type,
         recruitment_url=recruitment_url,
-        published_date=date.today()
+        published_date=int(time.time())
     )
     j.first().cities.clear()
     j.first().cities.add(*cities)
@@ -117,7 +117,8 @@ def get_company_account(account: Account, raise_exception=True):
 def author_check(account: Account, id: int) -> bool:
     j = Job.objects.filter(id=id).first()
     if j.company != get_company_account(account):
-        raise InvalidInputFormat('Account with id {} isn\'t author of job with id {}'.format(account.id, id))
+        raise InvalidInputFormat(
+            'Account with id {} isn\'t author of job with id {}'.format(account.id, id))
         return False
     return True
 
