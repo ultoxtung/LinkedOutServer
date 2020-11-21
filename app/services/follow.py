@@ -74,8 +74,9 @@ def count_follow(*, account: Account, id: int) -> dict:
 
 
 def company_followed(*, account: Account, id: int) -> list:
-    accounts = Follow.objects.filter(
+    follows = Follow.objects.filter(
         sender__id=id, receiver__account_type='company')
+    accounts = [f.receiver for f in follows]
     companies = [Company.objects.filter(account=a).first() for a in accounts]
     return [
         {
