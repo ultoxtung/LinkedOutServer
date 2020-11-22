@@ -63,7 +63,6 @@ class PostSerializer(serializers.ModelSerializer):
     user_firstname = serializers.SerializerMethodField()
     user_lastname = serializers.SerializerMethodField()
     user_profile_picture = serializers.SerializerMethodField()
-    skills = SkillRelatedField(queryset=Skill.objects.all(), many=True)
 
     def get_user_firstname(self, obj):
         return obj.user.firstname
@@ -81,7 +80,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         ref_name = 'PostSerializer'
         fields = ['type', 'id', 'user_firstname', 'user_lastname', 'user_profile_picture',
-                  'title', 'content', 'published_date', 'post_picture', 'skills']
+                  'content', 'published_date', 'post_picture']
 
 
 class JobSerializer(serializers.ModelSerializer):
