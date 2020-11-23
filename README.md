@@ -56,3 +56,7 @@ You will be prompted to enter a username, email address, and strong password.
 ```bash
 python manage.py runserver
 ```
+
+
+### Sample data
+Sample data can be found [here](https://drive.google.com/file/d/1fn08rJJTranGAVpBvo4zDyMEdU4csL1_/view?usp=sharing)
