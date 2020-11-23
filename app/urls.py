@@ -9,8 +9,7 @@ from app.views.email import (EmailCreateView, EmailDeleteView, EmailListView,
                              EmailUpdateView)
 from app.views.experience import (ExperienceCreateView, ExperienceDeleteView,
                                   ExperienceListView, ExperienceUpdateView)
-from app.views.feed import (FeedGetView, FeedSuggestFollowView,
-                            FeedSuggestJobView)
+from app.views.feed import (FeedGetView, FeedSuggestFollowView)
 from app.views.follow import (FollowListView, UserFollowedView, CompanyFollowedView, FollowCheckView,
                               FollowCountView, FollowCreateView,
                               FollowDeleteView)
@@ -142,7 +141,6 @@ tag_patterns = [
 
 feed_patterns = [
     path('get', FeedGetView.as_view()),
-    path('suggest-job', FeedSuggestJobView.as_view()),
     path('suggest-follow', FeedSuggestFollowView.as_view()),
 ]
 

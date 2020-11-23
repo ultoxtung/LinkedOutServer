@@ -22,12 +22,12 @@ class CommentListView(APIView):
             fields = ['id']
 
     class OutputSerializer(serializers.ModelSerializer):
-        user_id = serializers.SerializerMethodField()
+        account_id = serializers.SerializerMethodField()
         user_firstname = serializers.SerializerMethodField()
         user_lastname = serializers.SerializerMethodField()
         user_profile_picture = serializers.SerializerMethodField()
 
-        def get_user_id(self, obj):
+        def get_account_id(self, obj):
             return obj.user.account.id
 
         def get_user_firstname(self, obj):
@@ -67,12 +67,12 @@ class CommentCreateView(APIView):
             fields = ['id', 'content']
 
     class OutputSerializer(serializers.ModelSerializer):
-        user_id = serializers.SerializerMethodField()
+        account_id = serializers.SerializerMethodField()
         user_firstname = serializers.SerializerMethodField()
         user_lastname = serializers.SerializerMethodField()
         user_profile_picture = serializers.SerializerMethodField()
 
-        def get_user_id(self, obj):
+        def get_account_id(self, obj):
             return obj.user.account.id
 
         def get_user_firstname(self, obj):
@@ -111,12 +111,12 @@ class CommentUpdateView(APIView):
             fields = ['id', 'content']
 
     class OutputSerializer(serializers.ModelSerializer):
-        user_id = serializers.SerializerMethodField()
+        account_id = serializers.SerializerMethodField()
         user_firstname = serializers.SerializerMethodField()
         user_lastname = serializers.SerializerMethodField()
         user_profile_picture = serializers.SerializerMethodField()
 
-        def get_user_id(self, obj):
+        def get_account_id(self, obj):
             return obj.user.account.id
 
         def get_user_firstname(self, obj):
@@ -154,12 +154,12 @@ class CommentDeleteView(APIView):
             fields = ['id']
 
     class OutputSerializer(serializers.ModelSerializer):
-        user_id = serializers.SerializerMethodField()
+        account_id = serializers.SerializerMethodField()
         user_firstname = serializers.SerializerMethodField()
         user_lastname = serializers.SerializerMethodField()
         user_profile_picture = serializers.SerializerMethodField()
 
-        def get_user_id(self, obj):
+        def get_account_id(self, obj):
             return obj.user.account.id
 
         def get_user_firstname(self, obj):
