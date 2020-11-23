@@ -6,8 +6,8 @@ from app.models.account import Account
 from app.models.company import Company
 from app.models.job import Job
 from app.models.post import Post
-from app.models.skill import Skill
 from app.models.user import User
+from app.models.comment import Comment
 
 
 def get_feed(*, account: Account) -> list:
@@ -17,40 +17,15 @@ def get_feed(*, account: Account) -> list:
     job_list = Job.objects.filter(
         company__in=followed_companies).order_by('-published_date')
 
-    already_have_skills = user.skills.all()
-    sid = []
-    [sid.append(s.id) for s in already_have_skills]
-    not_have_skills = Skill.objects.exclude(id__in=sid)
-    post_list = Post.objects.all().order_by('-published_date')
+    followed_users = User.objects.filter(followers=user)
+    post_list = Post.objects.filter(
+        user__in=followed_users).order_by('-published_date')
 
     feed = list(sorted(chain(job_list, post_list),
-                       key=lambda instance: instance.published_date, reverse=True))
+                       key=lambda instance: instance.published_date,
+                       reverse=True))
     feed = list(dict.fromkeys(feed))
     return feed
-
-
-def suggest_job(*, account: Account) -> list:
-    NUMBER_OF_SUGGESTION = 3
-    user = get_user_account(account)
-
-    already_have_skills = user.skills.all()
-    sid = []
-    [sid.append(s.id) for s in already_have_skills]
-    not_have_skills = Skill.objects.exclude(id__in=sid)
-    job_list = Job.objects.filter(
-        skills__in=already_have_skills).order_by('-published_date')
-    job_list = job_list.exclude(
-        skills__in=not_have_skills).order_by('-published_date')
-    job_list = job_list.exclude(
-        company__followers=user).order_by('-published_date')
-
-    res = list(job_list)
-    res = list(dict.fromkeys(res))
-
-    if len(res) < NUMBER_OF_SUGGESTION:
-        return res
-    first_post = randint(0, len(res) - NUMBER_OF_SUGGESTION)
-    return res[first_post:first_post + NUMBER_OF_SUGGESTION]
 
 
 def suggest_follow(*, account: Account) -> list:
@@ -59,9 +34,26 @@ def suggest_follow(*, account: Account) -> list:
 
     comps = Company.objects.exclude(followers=user)
     if comps.count() < NUMBER_OF_SUGGESTION:
-        return comps
-    fst = randint(0, comps.count() - NUMBER_OF_SUGGESTION)
-    return comps[fst:fst + NUMBER_OF_SUGGESTION]
+        suggest_companies = comps
+    else:
+        fst = randint(0, comps.count() - NUMBER_OF_SUGGESTION)
+        suggest_companies = comps[fst:fst + NUMBER_OF_SUGGESTION]
+
+    users = User.objects.exclude(followers=user)
+    if users.count() < NUMBER_OF_SUGGESTION:
+        suggest_users = users
+    else:
+        fst = randint(0, users.count() - NUMBER_OF_SUGGESTION)
+        suggest_users = user[fst:fst + NUMBER_OF_SUGGESTION]
+
+    suggest = list(sorted(chain(suggest_users, suggest_companies),
+                          key=lambda instance: instance.account.id))
+    suggest = list(dict.fromkeys(suggest))
+    return suggest
+
+
+def count_comment(id: int) -> int:
+    return Comment.objects.filter(post__id=id).count()
 
 
 def get_user_account(account: Account) -> User:
