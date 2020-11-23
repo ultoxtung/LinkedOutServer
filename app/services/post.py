@@ -1,4 +1,5 @@
 import os
+import time
 
 from app.models.post import Post
 from app.models.user import User
@@ -28,6 +29,7 @@ def create_post(*, account: Account, content: str) -> list:
     p = Post(
         user=get_user_account(account),
         content=content,
+        published_date=int(time.time()),
     )
     p.save()
     return p
@@ -41,6 +43,7 @@ def update_post(*, account: Account, id: int, content: str) -> list:
     author_check(account, id)
     p.update(
         content=content,
+        published_date=int(time.time()),
     )
 
     return list_post(id=account.id)

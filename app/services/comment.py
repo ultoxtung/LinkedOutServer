@@ -1,3 +1,5 @@
+import time
+
 from app.models.post import Post
 from app.models.comment import Comment
 from app.models.user import User
@@ -15,6 +17,7 @@ def create_comment(*, account: Account, id: int, content: str) -> list:
         user=get_user_account(account),
         post=get_post(id),
         content=content,
+        published_date=int(time.time()),
     )
     c.save()
     return list_comment(id=id)
@@ -28,6 +31,7 @@ def update_comment(*, account: Account, id: int, content: str) -> list:
     author_check(account, id)
     c.update(
         content=content,
+        published_date=int(time.time()),
     )
     post_id = c.first().post.id
     return list_comment(id=post_id)

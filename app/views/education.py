@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status, serializers
 from drf_yasg.utils import swagger_auto_schema
 
-from app.services.education import list_education, create_education, update_education, delete_education
+from app.services.education import (list_education, create_education,
+                                    update_education, delete_education)
 from app.utils import inline_serializer
 
 

@@ -42,7 +42,7 @@ class CommentListView(APIView):
         class Meta:
             model = Comment
             ref_name = 'CommentListOut'
-            fields = ['id', 'user_id', 'user_firstname', 'user_lastname',
+            fields = ['id', 'account_id', 'user_firstname', 'user_lastname',
                       'user_profile_picture', 'content', 'published_date']
 
     permission_classes = [AllowAny]
@@ -87,7 +87,7 @@ class CommentCreateView(APIView):
         class Meta:
             model = Comment
             ref_name = 'CommentCreateOut'
-            fields = ['id', 'user_id', 'user_firstname', 'user_lastname',
+            fields = ['id', 'account_id', 'user_firstname', 'user_lastname',
                       'user_profile_picture', 'content', 'published_date']
 
     permission_classes = [IsAuthenticated]
@@ -131,7 +131,7 @@ class CommentUpdateView(APIView):
         class Meta:
             model = Comment
             ref_name = 'CommentUpdateOut'
-            fields = ['id', 'user_id', 'user_firstname', 'user_lastname',
+            fields = ['id', 'account_id', 'user_firstname', 'user_lastname',
                       'user_profile_picture', 'content', 'published_date']
 
     permission_classes = [IsAuthenticated]
@@ -174,7 +174,7 @@ class CommentDeleteView(APIView):
         class Meta:
             model = Comment
             ref_name = 'CommentDeleteOut'
-            fields = ['id', 'user_id', 'user_firstname', 'user_lastname',
+            fields = ['id', 'account_id', 'user_firstname', 'user_lastname',
                       'user_profile_picture', 'content', 'published_date']
 
     permission_classes = [IsAuthenticated]
