@@ -59,4 +59,4 @@ python manage.py runserver
 
 
 ### Sample data
-Sample data can be found [here](https://drive.google.com/file/d/1fn08rJJTranGAVpBvo4zDyMEdU4csL1_/view?usp=sharing)
+Sample data can be found [here](https://drive.google.com/file/d/18zJz4zxit4cJvrJMk7gSqEV9Lc_CtmA6/view?usp=sharing)

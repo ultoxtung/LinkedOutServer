@@ -4,13 +4,11 @@ from rest_framework import status, serializers
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser
-from rest_framework.exceptions import ParseError
 from drf_yasg.utils import swagger_auto_schema
 
-from app.exceptions import InvalidInputFormat
 from app.models.comment import Comment
-from app.services.comment import list_comment, create_comment, update_comment, delete_comment
+from app.services.comment import (list_comment, create_comment, update_comment,
+                                  delete_comment)
 
 
 class CommentListView(APIView):
