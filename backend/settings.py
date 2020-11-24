@@ -33,7 +33,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'baton',
+    'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -155,43 +156,30 @@ REST_FRAMEWORK = {
 BATON = {
     'SITE_HEADER': '<img src="https://i.imgur.com/RCeabui.png" width="180">',
     'SITE_TITLE': 'LinkedOut',
-    'INDEX_TITLE': 'Site administration',
-    'SUPPORT_HREF': 'mailto:khoahockithuatmc@gmail.com',
-    'COPYRIGHT': 'Copyright © 2020 LinkedOut</a>',  # noqa
-    'POWERED_BY': '<a href="https://www.otto.to.it">Otto srl</a>',
-    'CONFIRM_UNSAVED_CHANGES': True,
-    'SHOW_MULTIPART_UPLOADING': True,
-    'ENABLE_IMAGES_PREVIEW': True,
-    'CHANGELIST_FILTERS_IN_MODAL': True,
-    'MENU_ALWAYS_COLLAPSED': False,
-    'MENU_TITLE': 'Menu',
-    'GRAVATAR_DEFAULT_IMG': 'identicon',
-    'MENU': (
-        {'type': 'title', 'label': 'main', 'apps': ('auth', )},
-        {
-            'type': 'app',
-            'name': 'auth',
-            'label': 'Authentication',
-            'icon': 'fa fa-lock',
-            'models': (
-                {
-                    'name': 'user',
-                    'label': 'Users'
-                },
-                {
-                    'name': 'group',
-                    'label': 'Groups'
-                },
-            )
-        },
-        { 'type': 'title', 'label': 'Contents', 'apps': ('flatpages', ) },
-        { 'type': 'model', 'label': 'Pages', 'name': 'flatpage', 'app': 'flatpages' },
-        { 'type': 'free', 'label': 'Relax', 'url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'perms': ('flatpages.add_flatpage', 'auth.change_user') },
-        {'type': 'free', 'label': 'Relaxing', 'default_open': False, 'icon': 'fa fa-puzzle-piece', 'children': [
-            {'type': 'free', 'label': 'Tetris',
-                'url': 'https://tetris.com/play-tetris/'},
-            {'type': 'free', 'label': 'Guess what is this',
-                'url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'},
-        ]},
-    ),
+    'INDEX_TITLE': 'Admin',
 }
+
+JET_THEMES = [
+    {
+        'theme': 'green',
+        'color': '#44b78b',
+        'title': 'Green'
+    },
+    {
+        'theme': 'light-violet',
+        'color': '#a464c4',
+        'title': 'Light Violet'
+    },
+    {
+        'theme': 'light-blue',
+        'color': '#5EADDE',
+        'title': 'Light Blue'
+    },
+    {
+        'theme': 'light-gray',
+        'color': '#222',
+        'title': 'Light Gray'
+    }
+]
+JET_CHANGE_FORM_SIBLING_LINKS = True
+JET_SIDE_MENU_COMPACT = True

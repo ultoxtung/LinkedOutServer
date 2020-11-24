@@ -41,7 +41,8 @@ urlpatterns = [
     url(r'^redoc/$', schema_view.with_ui('redoc',
                                          cache_timeout=0), name='schema-redoc'),
     path('admin/', admin.site.urls),
-    path('baton/', include('baton.urls')),
+    path('jet/', include('jet.urls')),
+    path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('api/', include('app.urls')),
 ]
 

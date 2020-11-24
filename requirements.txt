@@ -5,4 +5,4 @@ mysqlclient==2.0.1
 djangorestframework==3.11.1
 django-cors-headers==3.4.0
 drf-yasg==1.17.1
-django-baton==1.10.8
+r-django-jet==2.0.9
