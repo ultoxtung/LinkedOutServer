@@ -60,3 +60,8 @@ python manage.py runserver
 
 ## Sample data
 Sample data can be found [here](https://drive.google.com/file/d/1cNSVeVk8bPR3z8l2FUc8r4v4HPm9esHK/view?usp=sharing)
+Feature:
+- 6 users, with username user0001 to user0006, password is the same as username
+- 3 companies, with username company01 to company03, password is the same as username (2)
+- educations, experiences, posts, jobs, comments, etc... data
+- tags, lots of tags
