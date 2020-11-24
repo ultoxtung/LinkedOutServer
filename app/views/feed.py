@@ -157,6 +157,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class FeedGetView(APIView):
+    class InputSerializer(serializers.Serializer):
+        t = serializers.IntegerField()
+        q = serializers.IntegerField(required=False)
+
+        class Meta:
+            ref_name = 'FeedGetIn'
+            fields = ['t', 'q']
+
     class OutputSerializer(serializers.Serializer):
         @classmethod
         def get_serializer(cls, model):
@@ -174,10 +182,12 @@ class FeedGetView(APIView):
 
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(responses={200: OutputSerializer(many=True)})
+    @swagger_auto_schema(query_serializer=InputSerializer, responses={200: OutputSerializer(many=True)})
     @method_decorator(ensure_csrf_cookie)
     def get(self, request):
-        result = get_feed(account=request.user)
+        serializer = self.InputSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        result = get_feed(account=request.user, **serializer.validated_data)
         return Response(self.OutputSerializer(result, many=True).data, status=status.HTTP_200_OK)
 
 

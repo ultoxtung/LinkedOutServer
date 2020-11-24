@@ -10,22 +10,24 @@ from app.models.user import User
 from app.models.comment import Comment
 
 
-def get_feed(*, account: Account) -> list:
+def get_feed(*, account: Account, t: int, q: int) -> list:
     user = get_user_account(account)
 
     followed_companies = Company.objects.filter(followers=user)
     job_list = Job.objects.filter(
-        company__in=followed_companies).order_by('-published_date')
+        company__in=followed_companies,
+        published_date__lt=t).order_by('-published_date')
 
     followed_users = User.objects.filter(followers=user)
     post_list = Post.objects.filter(
-        user__in=followed_users).order_by('-published_date')
+        user__in=followed_users,
+        published_date__lt=t).order_by('-published_date')
 
     feed = list(sorted(chain(job_list, post_list),
                        key=lambda instance: instance.published_date,
                        reverse=True))
     feed = list(dict.fromkeys(feed))
-    return feed
+    return feed[:q]
 
 
 def suggest_follow(*, account: Account) -> list:
