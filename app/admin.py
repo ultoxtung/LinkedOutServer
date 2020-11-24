@@ -45,6 +45,11 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('title', )
 
 
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    search_fields = ('user__account__username', 'post__id', )
+
+
 @admin.register(Education)
 class EducationAdmin(admin.ModelAdmin):
     search_fields = ('user__account__username', )

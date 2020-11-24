@@ -8,17 +8,22 @@ from app.models.job import Job
 from app.models.post import Post
 from app.models.user import User
 from app.models.comment import Comment
+from app.models.follow import Follow
 
 
 def get_feed(*, account: Account, t: int, q: int) -> list:
-    user = get_user_account(account)
+    # user = get_user_account(account)
 
-    followed_companies = Company.objects.filter(followers=user)
+    f = Follow.objects.filter(sender=account, receiver__account_type='company')
+    followed_companies = [get_company_account(c.receiver) for c in f]
+    # Company.objects.filter(followers=user)
     job_list = Job.objects.filter(
         company__in=followed_companies,
         published_date__lt=t).order_by('-published_date')
 
-    followed_users = User.objects.filter(followers=user)
+    # followed_users = User.objects.filter(followers=user)
+    f = Follow.objects.filter(sender=account, receiver__account_type='user')
+    followed_users = [get_user_account(c.receiver) for c in f]
     post_list = Post.objects.filter(
         user__in=followed_users,
         published_date__lt=t).order_by('-published_date')
@@ -56,6 +61,13 @@ def suggest_follow(*, account: Account) -> list:
 
 def count_comment(id: int) -> int:
     return Comment.objects.filter(post__id=id).count()
+
+
+def get_company_account(account: Account) -> Company:
+    c = Company.objects.filter(account=account).first()
+    if c is None:
+        raise InvalidInputFormat("Company not found!")
+    return c
 
 
 def get_user_account(account: Account) -> User:
