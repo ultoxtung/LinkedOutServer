@@ -4,6 +4,7 @@ import time
 from app.models.post import Post
 from app.models.user import User
 from app.models.account import Account
+from app.services.notification import create_notification
 from app.exceptions import InvalidInputFormat
 from backend.settings import MEDIA_ROOT
 
@@ -32,6 +33,8 @@ def create_post(*, account: Account, content: str) -> list:
         published_date=int(time.time()),
     )
     p.save()
+    create_notification(type='post', account=account, post_job_id=p.id)
+
     return p
 
 

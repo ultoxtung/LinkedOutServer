@@ -1,6 +1,7 @@
 from app.models.post import Post
 from app.models.account import Account
 from app.models.user import User
+from app.services.notification import create_notification
 from app.exceptions import InvalidInputFormat
 
 
@@ -25,6 +26,9 @@ def create_interest(*, account: Account, id: int) -> bool:
     if p.interested_users.filter(account=account).exists():
         raise InvalidInputFormat("User with id {} already interested post with id {}.".format(account.id, id))
     p.interested_users.add(user_account)
+    create_notification(
+        type='interest', account=account, post_job_id=id, receiver=p.user.account)
+
     return { 'interested': True }
 
 

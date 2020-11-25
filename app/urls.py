@@ -33,6 +33,7 @@ from app.views.tag import (CompanyTagView, LocationTagView, SchoolTagView,
                            SkillTagView, SpecialtyTagView, TitleTagView)
 from app.views.message import (MessageSendView, ConversationGetView,
                                ConversationListView)
+from app.views.notification import NotificationListView
 
 account_patterns = [
     path('login', LoginView.as_view()),
@@ -157,6 +158,10 @@ message_patterns = [
     path('get-conversation', ConversationGetView.as_view()),
 ]
 
+notification_patterns = [
+    path('list-notification', NotificationListView.as_view()),
+]
+
 urlpatterns = [
     path('account/', include((account_patterns, 'account'))),
     path('user/', include((user_patterns, 'user'))),
@@ -175,5 +180,6 @@ urlpatterns = [
     path('feed/', include((feed_patterns, 'feed'))),
     path('statistic/', include((statistic_patterns, 'statistic'))),
     path('message/', include((message_patterns, 'message'))),
+    path('notification/', include((notification_patterns, 'notification'))),
     path('search', SearchView.as_view()),
 ]

@@ -3,6 +3,7 @@ from app.models.account import Account
 from app.models.company import Company
 from app.models.user import User
 from app.models.follow import Follow
+from app.services.notification import create_notification
 
 
 def list_follow(*, account: Account, id: int) -> list:
@@ -45,6 +46,8 @@ def create_follow(*, account: Account, id: int) -> bool:
         raise InvalidInputFormat(
             "Account with id {} already followed account with id {}.".format(account.id, id))
     new_follow = Follow(sender=account, receiver=a).save()
+    create_notification(type='follow', account=account, receiver=a)
+
     return {'followed': True}
 
 

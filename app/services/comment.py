@@ -4,6 +4,7 @@ from app.models.post import Post
 from app.models.comment import Comment
 from app.models.user import User
 from app.models.account import Account
+from app.services.notification import create_notification
 from app.exceptions import InvalidInputFormat
 
 
@@ -20,6 +21,13 @@ def create_comment(*, account: Account, id: int, content: str) -> list:
         published_date=int(time.time()),
     )
     c.save()
+    create_notification(
+        type='comment',
+        account=account,
+        post_job_id=c.post.id,
+        receiver=c.post.user.account,
+        comment_id=c.id)
+
     return list_comment(id=id)
 
 

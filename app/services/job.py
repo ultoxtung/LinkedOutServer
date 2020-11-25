@@ -5,6 +5,7 @@ from app.exceptions import InvalidInputFormat
 from app.models.account import Account
 from app.models.company import Company
 from app.models.job import Job
+from app.services.notification import create_notification
 from backend.settings import MEDIA_ROOT
 
 
@@ -45,6 +46,7 @@ def create_job(*, account: Account, title: str, description: str, seniority_leve
     j.save()
     j.cities.add(*cities)
     j.skills.add(*skills)
+    create_notification(type='job', account=account, post_job_id=j.id)
 
     return list_job(id=account.id)
 
