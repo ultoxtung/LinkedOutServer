@@ -12,7 +12,6 @@ def list_follow(*, account: Account, id: int) -> list:
             "Account with id {} doesn't exist.".format(id))
     follows = Follow.objects.filter(receiver__id=id)
     accounts = [f.sender for f in follows]
-    print(accounts)
     users = [User.objects.filter(account=a).first() for a in accounts]
     return [
         {
