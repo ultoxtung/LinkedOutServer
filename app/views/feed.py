@@ -159,11 +159,10 @@ class UserSerializer(serializers.ModelSerializer):
 class FeedGetView(APIView):
     class InputSerializer(serializers.Serializer):
         t = serializers.IntegerField()
-        q = serializers.IntegerField(required=False)
 
         class Meta:
             ref_name = 'FeedGetIn'
-            fields = ['t', 'q']
+            fields = ['t']
 
     class OutputSerializer(serializers.Serializer):
         @classmethod

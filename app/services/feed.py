@@ -11,17 +11,15 @@ from app.models.comment import Comment
 from app.models.follow import Follow
 
 
-def get_feed(*, account: Account, t: int, q: int) -> list:
-    # user = get_user_account(account)
+def get_feed(*, account: Account, t: int) -> list:
+    NUMBER_OF_POST = 50
 
     f = Follow.objects.filter(sender=account, receiver__account_type='company')
     followed_companies = [get_company_account(c.receiver) for c in f]
-    # Company.objects.filter(followers=user)
     job_list = Job.objects.filter(
         company__in=followed_companies,
         published_date__lt=t).order_by('-published_date')
 
-    # followed_users = User.objects.filter(followers=user)
     f = Follow.objects.filter(sender=account, receiver__account_type='user')
     followed_users = [get_user_account(c.receiver) for c in f]
     post_list = Post.objects.filter(
@@ -32,7 +30,7 @@ def get_feed(*, account: Account, t: int, q: int) -> list:
                        key=lambda instance: instance.published_date,
                        reverse=True))
     feed = list(dict.fromkeys(feed))
-    return feed[:q]
+    return feed[:NUMBER_OF_POST]
 
 
 def suggest_follow(*, account: Account) -> list:

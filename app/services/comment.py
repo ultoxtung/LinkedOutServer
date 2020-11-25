@@ -8,7 +8,7 @@ from app.exceptions import InvalidInputFormat
 
 
 def list_comment(*, id: int) -> list:
-    return Comment.objects.filter(post__id=id)
+    return Comment.objects.filter(post__id=id).order_by('published_date')
 
 
 def create_comment(*, account: Account, id: int, content: str) -> list:

@@ -31,6 +31,8 @@ from app.views.user import (UserCreateView, UserGetView,
                             UserProfilePictureView, UserUpdateView)
 from app.views.tag import (CompanyTagView, LocationTagView, SchoolTagView,
                            SkillTagView, SpecialtyTagView, TitleTagView)
+from app.views.message import (MessageSendView, ConversationGetView,
+                               ConversationListView)
 
 account_patterns = [
     path('login', LoginView.as_view()),
@@ -149,6 +151,12 @@ statistic_patterns = [
     path('jobs-by-skill', JobsBySkillView.as_view()),
 ]
 
+message_patterns = [
+    path('send', MessageSendView.as_view()),
+    path('list-conversation', ConversationListView.as_view()),
+    path('get-conversation', ConversationGetView.as_view()),
+]
+
 urlpatterns = [
     path('account/', include((account_patterns, 'account'))),
     path('user/', include((user_patterns, 'user'))),
@@ -166,5 +174,6 @@ urlpatterns = [
     path('tag/', include((tag_patterns, 'tag'))),
     path('feed/', include((feed_patterns, 'feed'))),
     path('statistic/', include((statistic_patterns, 'statistic'))),
-    path('search', SearchView.as_view())
+    path('message/', include((message_patterns, 'message'))),
+    path('search', SearchView.as_view()),
 ]
