@@ -20,10 +20,16 @@ class NotificationListView(APIView):
             fields = ['t']
 
     class OutputSerializer(serializers.ModelSerializer):
+        receiver_id = serializers.SerializerMethodField()
+
+        def get_receiver_id(self, obj):
+            return obj.receiver.id
+
         class Meta:
             model = Notification
             ref_name = 'NotificationListOut'
-            fields = '__all__'
+            fields = ['id', 'receiver_id', 'type', 'content', 'account_id',
+                      'post_job_id', 'comment_id', 'published_date']
 
     permission_classes = [IsAuthenticated]
 

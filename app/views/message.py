@@ -76,10 +76,19 @@ class ConversationGetView(APIView):
             fields = ['id', 't']
 
     class OutputSerializer(serializers.ModelSerializer):
+        sender_id = serializers.SerializerMethodField()
+        receiver_id = serializers.SerializerMethodField()
+
+        def get_sender_id(self, obj):
+            return obj.sender.id
+
+        def get_receiver_id(self, obj):
+            return obj.receiver.id
+
         class Meta:
             model = Message
             ref_name = 'ConversationGetOut'
-            fields = ['sender', 'receiver', 'type', 'content', 'published_date']
+            fields = ['sender_id', 'receiver_id', 'type', 'content', 'published_date']
 
     permission_classes = [IsAuthenticated]
 
