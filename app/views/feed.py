@@ -131,14 +131,12 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         ref_name = 'CompanySerializer'
-        fields = ['type', 'id', 'account_id', 'name', 'description',
-                  'profile_picture']
+        fields = ['type', 'account_id', 'name', 'description', 'profile_picture']
 
 
 class UserSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
     account_id = serializers.SerializerMethodField()
-    name = serializers.SerializerMethodField()
 
     def get_type(self, obj):
         return 'user'
@@ -146,14 +144,11 @@ class UserSerializer(serializers.ModelSerializer):
     def get_account_id(self, obj):
         return obj.account.id
 
-    def get_name(self, obj):
-        return obj.firstname + obj.lastname
-
     class Meta:
         model = User
         ref_name = 'UserSerializer'
-        fields = ['type', 'id', 'account_id', 'name', 'profile_picture',
-                  'description']
+        fields = ['type', 'account_id', 'firstname', 'lastname',
+                  'profile_picture', 'description']
 
 
 class FeedGetView(APIView):
