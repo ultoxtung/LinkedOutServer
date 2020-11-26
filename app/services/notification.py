@@ -26,7 +26,7 @@ def create_notification(*, type: str, account: Account, **kwargs):
         device = FCMDevice.objects.filter(user=receiver)
         for d in device:
             response = d.send_message(title=title, body=message, sound=True)
-            print(response)
+            # print(response)
 
     def npost():
         u = get_user_account(account)
