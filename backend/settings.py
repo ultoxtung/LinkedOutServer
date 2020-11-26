@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'drf_yasg',
+    'fcm_django',
     'baton.autodiscover',
 ]
 
@@ -152,6 +153,15 @@ REST_FRAMEWORK = {
     ),
 }
 
+# django fcm for firebase push notification
+
+FCM_DJANGO_SETTINGS = {
+    'FCM_SERVER_KEY': 'AAAA_l923ZY:APA91bF755R_jgvluvuOnOwJVqIR59_Kk78NV5QXg_giek3tqZd3PVFxOMHqiwRoa98GmlekPnhtXFmERTofU-xVTEKyRiXe1wyHoXPnaRhYt-xj04-UzlitPOxEo1XJwHR7Nap2Qw-8',
+    'USER_MODEL': 'app.Account',
+}
+
+# admin page
+
 BATON = {
     'SITE_HEADER': '<img src="https://i.imgur.com/RCeabui.png" width="180">',
     'SITE_TITLE': 'LinkedOut',
@@ -186,7 +196,7 @@ BATON = {
         },
         { 'type': 'title', 'label': 'Contents', 'apps': ('flatpages', ) },
         { 'type': 'model', 'label': 'Pages', 'name': 'flatpage', 'app': 'flatpages' },
-        { 'type': 'free', 'label': 'Relax', 'url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'perms': ('flatpages.add_flatpage', 'auth.change_user') },
+        # { 'type': 'free', 'label': 'Relax', 'url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'perms': ('flatpages.add_flatpage', 'auth.change_user') },
         {'type': 'free', 'label': 'Relaxing', 'default_open': False, 'icon': 'fa fa-puzzle-piece', 'children': [
             {'type': 'free', 'label': 'Tetris',
                 'url': 'https://tetris.com/play-tetris/'},

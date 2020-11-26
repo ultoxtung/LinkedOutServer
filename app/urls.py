@@ -1,6 +1,7 @@
 from django.urls import include, path
 
-from app.views.account import ChangePasswordView, LoginView, RegisterView
+from app.views.account import (ChangePasswordView, LoginView, RegisterView,
+                               PushDeviceTokenView)
 from app.views.company import (CompanyCreateView, CompanyGetView,
                                CompanyProfilePictureView, CompanyUpdateView)
 from app.views.education import (EducationCreateView, EducationDeleteView,
@@ -39,6 +40,7 @@ account_patterns = [
     path('login', LoginView.as_view()),
     path('register', RegisterView.as_view()),
     path('changepassword', ChangePasswordView.as_view()),
+    path('push-device-token', PushDeviceTokenView.as_view()),
 ]
 
 email_patterns = [

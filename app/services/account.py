@@ -7,6 +7,7 @@ from django.db import transaction
 from rest_framework.exceptions import AuthenticationFailed
 
 from backend.settings import SECRET_KEY
+from fcm_django.models import FCMDevice
 from app.models.account import Account
 from app.services.email import create_email
 from app.exceptions import InvalidInputFormat
@@ -78,6 +79,15 @@ def change_password(*, account: Account, current_password: str, new_password: st
     password_format_check(new_password)
     account.password = hashed_password(new_password)
     account.save()
+
+
+def push_device_token(*, account: Account, device_token: str):
+    d = FCMDevice.objects.filter(user=account, registration_id=device_token).first()
+    if d:
+        return
+    # satan forgive me pls for this type hardcode
+    d = FCMDevice(registration_id=device_token, user=account, type='android')
+    d.save()
 
 
 def hashed_password(password: str) -> str:

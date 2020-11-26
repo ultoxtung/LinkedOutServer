@@ -7,7 +7,8 @@ from rest_framework import status, serializers
 from drf_yasg.utils import swagger_auto_schema
 
 from app.models.account import Account
-from app.services.account import login, create_account, change_password
+from app.services.account import (login, create_account, change_password,
+                                  push_device_token)
 from app.utils import inline_serializer
 
 
@@ -97,4 +98,21 @@ class ChangePasswordView(APIView):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         change_password(account=request.user, **serializer.validated_data)
-        return Response("Password changed.", status=status.HTTP_200_OK)
+        return Response("Password changed", status=status.HTTP_200_OK)
+
+
+class PushDeviceTokenView(APIView):
+    class InputSerializer(serializers.Serializer):
+        device_token = serializers.CharField(required=True)
+
+        class Meta:
+            ref_name = 'PushDeviceTokenIn'
+            fields = ['device_token']
+
+    @swagger_auto_schema(request_body=InputSerializer, responses={200: "Device registered"})
+    @method_decorator(ensure_csrf_cookie)
+    def post(self, request):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        push_device_token(account=request.user, **serializer.validated_data)
+        return Response("Device registered", status=status.HTTP_200_OK)
