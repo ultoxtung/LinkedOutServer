@@ -11,9 +11,9 @@ from app.views.email import (EmailCreateView, EmailDeleteView, EmailListView,
 from app.views.experience import (ExperienceCreateView, ExperienceDeleteView,
                                   ExperienceListView, ExperienceUpdateView)
 from app.views.feed import (FeedGetView, FeedSuggestFollowView)
-from app.views.follow import (FollowListView, UserFollowedView, CompanyFollowedView, FollowCheckView,
-                              FollowCountView, FollowCreateView,
-                              FollowDeleteView)
+from app.views.follow import (FollowListView, UserFollowedView, CompanyFollowedView,
+                              FollowCheckView, FollowCountView, FollowedCountView,
+                              FollowCreateView, FollowDeleteView)
 from app.views.interest import (AccountInterestedView, InterestCheckView,
                                 InterestCountView, InterestCreateView,
                                 InterestDeleteView, PostInterestedView)
@@ -106,6 +106,7 @@ follow_patterns = [
     path('create', FollowCreateView.as_view()),  # post
     path('delete', FollowDeleteView.as_view()),  # post
     path('count', FollowCountView.as_view()),  # get
+    path('count-followed', FollowedCountView.as_view()),  # get
     path('company-followed', CompanyFollowedView.as_view()),  # get
     path('user-followed', UserFollowedView.as_view()),  # get
 ]

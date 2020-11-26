@@ -26,7 +26,7 @@ def list_follow(*, account: Account, id: int) -> list:
     ]
 
 
-def check_follow(*, account: Account, id: int) -> bool:
+def check_follow(*, account: Account, id: int) -> dict:
     a = Account.objects.filter(id=id).first()
     if not a:
         raise InvalidInputFormat(
@@ -36,7 +36,7 @@ def check_follow(*, account: Account, id: int) -> bool:
     return {'followed': False}
 
 
-def create_follow(*, account: Account, id: int) -> bool:
+def create_follow(*, account: Account, id: int) -> dict:
     a = Account.objects.filter(id=id).first()
     if not a:
         raise InvalidInputFormat(
@@ -51,7 +51,7 @@ def create_follow(*, account: Account, id: int) -> bool:
     return {'followed': True}
 
 
-def delete_follow(*, account: Account, id: int) -> bool:
+def delete_follow(*, account: Account, id: int) -> dict:
     a = Account.objects.filter(id=id).first()
     if not a:
         raise InvalidInputFormat(
@@ -72,6 +72,16 @@ def count_follow(*, account: Account, id: int) -> dict:
             "Account with id {} doesn't exist.".format(id))
     return {
         'count': Follow.objects.filter(receiver=a).count()
+    }
+
+
+def count_followed(*, account: Account, id: int) -> dict:
+    a = Account.objects.filter(id=id).first()
+    if not a:
+        raise InvalidInputFormat(
+            "Account with id {} doesn't exist.".format(id))
+    return {
+        'count': Follow.objects.filter(sender=a).count()
     }
 
 

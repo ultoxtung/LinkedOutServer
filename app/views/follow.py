@@ -6,7 +6,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 
-from app.services.follow import list_follow, check_follow, create_follow, delete_follow, count_follow, company_followed, user_followed
+from app.services.follow import (list_follow, check_follow, create_follow,
+                                 delete_follow, count_follow, count_followed,
+                                 company_followed, user_followed)
 
 
 class FollowListView(APIView):
@@ -148,8 +150,34 @@ class FollowCountView(APIView):
     def get(self, request):
         serializer = self.InputSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
-        result = count_follow(account=request.user, **
-                              serializer.validated_data)
+        result = count_follow(account=request.user, **serializer.validated_data)
+        return Response(self.OutputSerializer(result).data, status=status.HTTP_200_OK)
+
+
+class FollowedCountView(APIView):
+    class InputSerializer(serializers.Serializer):
+        id = serializers.IntegerField(required=True)
+
+        class Meta:
+            ref_name = 'FollowedCountIn'
+            fields = ['id']
+
+    class OutputSerializer(serializers.Serializer):
+        count = serializers.IntegerField()
+
+        class Meta:
+            ref_name = 'FollowedCountOut'
+            fields = ['count']
+
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    @swagger_auto_schema(query_serializer=InputSerializer, responses={200: OutputSerializer})
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request):
+        serializer = self.InputSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        result = count_followed(account=request.user, **serializer.validated_data)
         return Response(self.OutputSerializer(result).data, status=status.HTTP_200_OK)
 
 
