@@ -99,8 +99,9 @@ def create_notification(*, type: str, account: Account, **kwargs):
 def list_notification(*, account: Account, t: int) -> list:
     NUMBER_OF_NOTIFICATION = 20
 
+    ts = t if t != 0 else int(time.time())
     noti = Notification.objects.filter(
-        receiver=account, published_date__lt=t).order_by('-published_date')
+        receiver=account, published_date__lt=ts).order_by('-published_date')
     return noti[:NUMBER_OF_NOTIFICATION]
 
 

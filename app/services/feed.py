@@ -1,5 +1,6 @@
 from itertools import chain
 from random import randint
+import time
 
 from app.exceptions import InvalidInputFormat
 from app.models.account import Account
@@ -14,17 +15,19 @@ from app.models.follow import Follow
 def get_feed(*, account: Account, t: int) -> list:
     NUMBER_OF_POST = 50
 
+    ts = t if t != 0 else int(time.time())
+
     f = Follow.objects.filter(sender=account, receiver__account_type='company')
     followed_companies = [get_company_account(c.receiver) for c in f]
     job_list = Job.objects.filter(
         company__in=followed_companies,
-        published_date__lt=t).order_by('-published_date')
+        published_date__lt=ts).order_by('-published_date')
 
     f = Follow.objects.filter(sender=account, receiver__account_type='user')
     followed_users = [get_user_account(c.receiver) for c in f]
     post_list = Post.objects.filter(
         user__in=followed_users,
-        published_date__lt=t).order_by('-published_date')
+        published_date__lt=ts).order_by('-published_date')
 
     feed = list(sorted(chain(job_list, post_list),
                        key=lambda instance: instance.published_date,

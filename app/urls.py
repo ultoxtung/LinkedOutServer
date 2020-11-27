@@ -162,7 +162,7 @@ message_patterns = [
 ]
 
 notification_patterns = [
-    path('list-notification', NotificationListView.as_view()),
+    path('list', NotificationListView.as_view()),
 ]
 
 urlpatterns = [

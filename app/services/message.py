@@ -62,8 +62,9 @@ def get_last_message(*, first_user: Account, second_user: Account) -> Message:
 
 
 def list_conversation(*, account: Account, t: int) -> list:
-    outgoing = Message.objects.filter(sender=account, published_date__lt=t)
-    incoming = Message.objects.filter(receiver=account, published_date__lt=t)
+    ts = t if t != 0 else int(time.time())
+    outgoing = Message.objects.filter(sender=account, published_date__lt=ts)
+    incoming = Message.objects.filter(receiver=account, published_date__lt=ts)
 
     cons = []
     for c in outgoing:
@@ -92,11 +93,12 @@ def list_conversation(*, account: Account, t: int) -> list:
 
 
 def get_conversation(*, account: Account, id: int, t: int) -> list:
+    ts = t if t != 0 else int(time.time())
     second_user = get_account_with_id(id=id)
     messages = Message.objects.filter(
         Q(Q(Q(sender=account) & Q(receiver=second_user)) |
           Q(Q(sender=second_user) & Q(receiver=account))) &
-        Q(published_date__lt=t))
+        Q(published_date__lt=ts))
     return sorted(messages,
                   key=lambda instance: instance.published_date,
                   reverse=True)[:NUMBER_OF_MESSAGES]
