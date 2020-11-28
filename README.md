@@ -60,8 +60,7 @@ python manage.py runserver
 
 ## Sample data
 Sample data can be found [here](https://drive.google.com/file/d/1cNSVeVk8bPR3z8l2FUc8r4v4HPm9esHK/view?usp=sharing)
-Feature:
-- 6 users, with username user0001 to user0006, password is the same as username
-- 3 companies, with username company01 to company03, password is the same as username (2)
-- educations, experiences, posts, jobs, comments, etc... data
-- tags, lots of tags
+
+There are 6 users, with username "user0001" to "user0006" and 3 companies, with username "company01" to "company03" (without quote marks). All the password is the same as username. All of them have already completed profile. There are also some prepared posts, jobs, comments, notifications, messages. All you have to do is importing the DB.
+
+Admin username is "admin", password "profNPT123" (without quote marks (2))

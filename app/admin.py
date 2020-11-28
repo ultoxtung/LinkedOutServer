@@ -63,3 +63,13 @@ class ExperienceAdmin(admin.ModelAdmin):
 @admin.register(Social)
 class SocialAdmin(admin.ModelAdmin):
     search_fields = ('user__account__username', )
+
+
+@admin.register(Follow)
+class FollowAdmin(admin.ModelAdmin):
+    search_fields = ('sender__username', 'receiver__username', )
+
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    search_fields = ('sender__username', )

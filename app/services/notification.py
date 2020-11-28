@@ -11,6 +11,8 @@ from app.exceptions import InvalidInputFormat
 
 def create_notification(*, type: str, account: Account, **kwargs):
     def new_notification(receiver: Account, content: str):
+        if receiver == account:
+            return
         n = Notification(
             type=type,
             account_id=account.id,
