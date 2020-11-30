@@ -12,7 +12,7 @@ from app.models.comment import Comment
 from app.models.follow import Follow
 
 
-def get_feed(*, account: Account, t: int) -> list:
+def get_feed(*, account: Account, t: int = 0) -> list:
     NUMBER_OF_POST = 50
 
     ts = t if t != 0 else int(time.time())

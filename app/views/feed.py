@@ -131,7 +131,8 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         ref_name = 'CompanySerializer'
-        fields = ['type', 'account_id', 'name', 'description', 'profile_picture']
+        fields = ['type', 'account_id', 'name',
+                  'description', 'profile_picture']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -153,7 +154,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class FeedGetView(APIView):
     class InputSerializer(serializers.Serializer):
-        t = serializers.IntegerField()
+        t = serializers.IntegerField(required=False)
 
         class Meta:
             ref_name = 'FeedGetIn'
