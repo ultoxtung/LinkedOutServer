@@ -13,9 +13,12 @@ from app.models.follow import Follow
 
 
 def get_feed(*, account: Account, t: int = 0) -> list:
-    NUMBER_OF_POST = 50
+    NUMBER_OF_POST = 5
 
     ts = t if t != 0 else int(time.time())
+
+    my_list = Post.objects.filter(
+        published_date__lt=ts, user=User.objects.filter(account=account).first()).order_by('-published_date')
 
     f = Follow.objects.filter(sender=account, receiver__account_type='company')
     followed_companies = [get_company_account(c.receiver) for c in f]
@@ -29,7 +32,7 @@ def get_feed(*, account: Account, t: int = 0) -> list:
         user__in=followed_users,
         published_date__lt=ts).order_by('-published_date')
 
-    feed = list(sorted(chain(job_list, post_list),
+    feed = list(sorted(chain(job_list, post_list, my_list),
                        key=lambda instance: instance.published_date,
                        reverse=True))
     feed = list(dict.fromkeys(feed))
