@@ -61,7 +61,7 @@ def get_last_message(*, first_user: Account, second_user: Account) -> Message:
     return outgoing if outgoing.published_date > incoming.published_date else incoming
 
 
-def list_conversation(*, account: Account, t: int) -> list:
+def list_conversation(*, account: Account, t: int = 0) -> list:
     ts = t if t != 0 else int(time.time())
     outgoing = Message.objects.filter(sender=account, published_date__lt=ts)
     incoming = Message.objects.filter(receiver=account, published_date__lt=ts)
@@ -92,7 +92,7 @@ def list_conversation(*, account: Account, t: int) -> list:
                   reverse=True)[:NUMBER_OF_CONVERSATIONS]
 
 
-def get_conversation(*, account: Account, id: int, t: int) -> list:
+def get_conversation(*, account: Account, id: int, t: int = 0) -> list:
     ts = t if t != 0 else int(time.time())
     second_user = get_account_with_id(id=id)
     messages = Message.objects.filter(

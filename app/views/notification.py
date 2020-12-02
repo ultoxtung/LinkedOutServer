@@ -4,10 +4,8 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import serializers, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.exceptions import ParseError
 from rest_framework.views import APIView
 
-from app.models.notification import Notification
 from app.services.notification import list_notification
 
 
@@ -19,17 +17,21 @@ class NotificationListView(APIView):
             ref_name = 'NotificationListIn'
             fields = ['t']
 
-    class OutputSerializer(serializers.ModelSerializer):
-        receiver_id = serializers.SerializerMethodField()
-
-        def get_receiver_id(self, obj):
-            return obj.receiver.id
+    class OutputSerializer(serializers.Serializer):
+        id = serializers.IntegerField()
+        type = serializers.CharField()
+        author_name = serializers.CharField()
+        profile_picture = serializers.ImageField()
+        action = serializers.CharField()
+        content = serializers.CharField()
+        post_job_id = serializers.IntegerField()
+        comment_id = serializers.IntegerField()
+        published_date = serializers.IntegerField()
 
         class Meta:
-            model = Notification
             ref_name = 'NotificationListOut'
-            fields = ['id', 'receiver_id', 'type', 'content', 'account_id',
-                      'post_job_id', 'comment_id', 'published_date']
+            fields = ['id', 'type', 'author_name', 'profile_picture', 'action',
+                      'content', 'post_job_id', 'comment_id', 'published_date']
 
     permission_classes = [IsAuthenticated]
 

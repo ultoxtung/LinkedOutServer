@@ -15,7 +15,7 @@ class User(models.Model):
     lastname = models.CharField(max_length=127)
     dateofbirth = models.DateField()
     profile_picture = models.ImageField(
-        upload_to=store_picture, default='profile/user_default_male.jpg')
+        upload_to=store_picture, default='profile/user_default_other.jpg')
     description = models.TextField(null=True)
     gender = models.CharField(max_length=8)
     skills = models.ManyToManyField(Skill)
