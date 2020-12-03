@@ -9,8 +9,8 @@ from fcm_django.models import FCMDevice
 from app.exceptions import InvalidInputFormat
 
 
-NUMBER_OF_CONVERSATIONS = 20
-NUMBER_OF_MESSAGES = 50
+NUMBER_OF_CONVERSATIONS = 10
+NUMBER_OF_MESSAGES = 15
 
 
 def send_message(*, account: Account, id: int, type: str, content: str):

@@ -89,7 +89,7 @@ class ConversationGetView(APIView):
         class Meta:
             model = Message
             ref_name = 'ConversationGetOut'
-            fields = ['sender_id', 'receiver_id',
+            fields = ['id', 'sender_id', 'receiver_id',
                       'type', 'content', 'published_date']
 
     permission_classes = [IsAuthenticated]
