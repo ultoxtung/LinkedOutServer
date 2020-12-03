@@ -20,7 +20,7 @@ def create_notification(*, type: str, account: Account, **kwargs):
             type=type,
             account_id=account.id,
             receiver=receiver,
-            # content=content,
+            content='',
             post_job_id=kwargs.get('post_job_id') if 'post_job_id' in kwargs else 0,
             comment_id=kwargs.get('comment_id') if 'comment_id' in kwargs else 0,
             published_date=int(time.time())
@@ -61,6 +61,8 @@ def create_notification(*, type: str, account: Account, **kwargs):
     def ninterest():
         if ('receiver' not in kwargs) or ('post_job_id' not in kwargs):
             return
+        if (kwargs.get('receiver') == account):
+            return
         u = get_user_account(account)
         author_name = u.firstname + ' ' + u.lastname
         p = Post.objects.filter(id=kwargs.get('post_job_id')).first()
@@ -72,6 +74,8 @@ def create_notification(*, type: str, account: Account, **kwargs):
     def ncomment():
         if ('receiver' not in kwargs) or ('post_job_id' not in kwargs):
             return
+        if (kwargs.get('receiver') == account):
+            return
         u = get_user_account(account)
         author_name = u.firstname + ' ' + u.lastname
         p = Post.objects.filter(id=kwargs.get('post_job_id')).first()
@@ -82,6 +86,8 @@ def create_notification(*, type: str, account: Account, **kwargs):
 
     def nfollow():
         if 'receiver' not in kwargs:
+            return
+        if (kwargs.get('receiver') == account):
             return
         u = get_user_account(account)
         author_name = u.firstname + ' ' + u.lastname

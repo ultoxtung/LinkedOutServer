@@ -77,16 +77,17 @@ def list_conversation(*, account: Account, t: int = 0) -> list:
     for c in cons:
         info = get_account_info(account=c)
         mess = get_last_message(first_user=account, second_user=c)
-        res.append(
-            {
-                'id': info['id'],
-                'name': info['name'],
-                'profile_picture': info['profile_picture'],
-                'last_message_content': mess.content,
-                'last_message_timestamp': mess.published_date,
-                'outgoing': (mess.sender == account),
-            }
-        )
+        if mess.published_date < ts:
+            res.append(
+                {
+                    'id': info['id'],
+                    'name': info['name'],
+                    'profile_picture': info['profile_picture'],
+                    'last_message_content': mess.content,
+                    'last_message_timestamp': mess.published_date,
+                    'outgoing': (mess.sender == account),
+                }
+            )
     return sorted(res,
                   key=lambda instance: instance['last_message_timestamp'],
                   reverse=True)[:NUMBER_OF_CONVERSATIONS]
