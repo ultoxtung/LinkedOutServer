@@ -36,7 +36,7 @@ class MessageSendView(APIView):
 
 class ConversationListView(APIView):
     class InputSerializer(serializers.Serializer):
-        t = serializers.IntegerField()
+        t = serializers.IntegerField(required=False)
 
         class Meta:
             ref_name = 'ConversationListIn'
@@ -62,14 +62,15 @@ class ConversationListView(APIView):
     def get(self, request):
         serializer = self.InputSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
-        result = list_conversation(account=request.user, **serializer.validated_data)
+        result = list_conversation(
+            account=request.user, **serializer.validated_data)
         return Response(self.OutputSerializer(result, many=True).data, status=status.HTTP_200_OK)
 
 
 class ConversationGetView(APIView):
     class InputSerializer(serializers.Serializer):
         id = serializers.IntegerField()
-        t = serializers.IntegerField()
+        t = serializers.IntegerField(required=False)
 
         class Meta:
             ref_name = 'ConversationGetIn'
@@ -88,7 +89,8 @@ class ConversationGetView(APIView):
         class Meta:
             model = Message
             ref_name = 'ConversationGetOut'
-            fields = ['sender_id', 'receiver_id', 'type', 'content', 'published_date']
+            fields = ['sender_id', 'receiver_id',
+                      'type', 'content', 'published_date']
 
     permission_classes = [IsAuthenticated]
 
@@ -97,5 +99,6 @@ class ConversationGetView(APIView):
     def get(self, request):
         serializer = self.InputSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
-        result = get_conversation(account=request.user, **serializer.validated_data)
+        result = get_conversation(
+            account=request.user, **serializer.validated_data)
         return Response(self.OutputSerializer(result, many=True).data, status=status.HTTP_200_OK)

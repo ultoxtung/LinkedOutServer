@@ -11,7 +11,7 @@ from app.services.notification import list_notification
 
 class NotificationListView(APIView):
     class InputSerializer(serializers.Serializer):
-        t = serializers.IntegerField()
+        t = serializers.IntegerField(required=False)
 
         class Meta:
             ref_name = 'NotificationListIn'
@@ -40,5 +40,6 @@ class NotificationListView(APIView):
     def get(self, request):
         serializer = self.InputSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
-        result = list_notification(account=request.user, **serializer.validated_data)
+        result = list_notification(
+            account=request.user, **serializer.validated_data)
         return Response(self.OutputSerializer(result, many=True).data, status=status.HTTP_200_OK)
