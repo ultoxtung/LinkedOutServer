@@ -96,7 +96,7 @@ def company_followed(*, account: Account, id: int) -> list:
             'name': c.name,
             'profile_picture': c.profile_picture,
             'description': c.description,
-            'followed_count': Follow.objects.filter(receiver=c.account),
+            'followed_count': Follow.objects.filter(receiver=c.account).count(),
         } for c in companies
     ]
 
