@@ -18,11 +18,13 @@ from app.views.interest import (AccountInterestedView, InterestCheckView,
                                 InterestCountView, InterestCreateView,
                                 InterestDeleteView, PostInterestedView)
 from app.views.job import (JobCreateView, JobDeleteView, JobGetView,
-                           JobListView, JobPictureView, JobUpdateView)
+                           JobListView, JobPictureView, JobUpdateView,
+                           JobCountView)
 from app.views.phone import (PhoneCreateView, PhoneDeleteView, PhoneListView,
                              PhoneUpdateView)
 from app.views.post import (PostCreateView, PostDeleteView, PostGetView,
-                            PostListView, PostPictureView, PostUpdateView)
+                            PostListView, PostPictureView, PostUpdateView,
+                            PostCountView)
 from app.views.comment import (CommentListView, CommentCreateView,
                                CommentDeleteView, CommentUpdateView)
 from app.views.search import SearchView
@@ -98,6 +100,7 @@ job_patterns = [
     path('update', JobUpdateView.as_view()),
     path('delete', JobDeleteView.as_view()),
     path('upload', JobPictureView.as_view()),
+    path('count', JobCountView.as_view()),
 ]
 
 follow_patterns = [
@@ -118,6 +121,7 @@ post_patterns = [
     path('update', PostUpdateView.as_view()),
     path('delete', PostDeleteView.as_view()),
     path('upload', PostPictureView.as_view()),
+    path('count', PostCountView.as_view()),
 ]
 
 comment_patterns = [

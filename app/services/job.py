@@ -84,6 +84,12 @@ def delete_job(*, account: Account, id: int) -> list:
     return list_job(id=account.id)
 
 
+def count_job(*, id: int) -> dict:
+    return {
+        'count': Job.objects.filter(company__account__id=id).count()
+    }
+
+
 def set_job_picture(account: Account, id: int, file_instance):
     company_account_check(account)
     job_exist(id)

@@ -11,7 +11,8 @@ from rest_framework.exceptions import ParseError
 from app.models.job import Job
 from app.models.skill import Skill
 from app.models.city import City
-from app.services.job import get_job, list_job, create_job, update_job, delete_job, set_job_picture
+from app.services.job import (get_job, list_job, create_job, update_job,
+                              delete_job, set_job_picture, count_job)
 
 
 class SkillRelatedField(serializers.RelatedField):
@@ -200,6 +201,33 @@ class JobDeleteView(APIView):
         serializer.is_valid(raise_exception=True)
         result = delete_job(account=request.user, **serializer.validated_data)
         return Response(self.OutputSerializer(result, many=True).data, status=status.HTTP_200_OK)
+
+
+class JobCountView(APIView):
+    class InputSerializer(serializers.Serializer):
+        id = serializers.IntegerField(required=True)
+
+        class Meta:
+            ref_name = 'JobCountIn'
+            fields = ['id']
+
+    class OutputSerializer(serializers.Serializer):
+        count = serializers.IntegerField()
+
+        class Meta:
+            ref_name = 'JobCountOut'
+            fields = ['count']
+
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    @swagger_auto_schema(query_serializer=InputSerializer, responses={200: OutputSerializer})
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request):
+        serializer = self.InputSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        result = count_job(**serializer.validated_data)
+        return Response(self.OutputSerializer(result).data, status=status.HTTP_200_OK)
 
 
 class JobPictureView(APIView):

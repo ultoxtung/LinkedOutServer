@@ -62,6 +62,12 @@ def delete_post(*, account: Account, id: int) -> list:
     return list_post(id=account.id)
 
 
+def count_post(*, id: int) -> dict:
+    return {
+        'count': Post.objects.filter(user__account__id=id).count()
+    }
+
+
 def set_post_picture(account: Account, id: int, file_instance):
     user_account_check(account)
     post_exist(id)
