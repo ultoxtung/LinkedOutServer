@@ -65,6 +65,7 @@ class PostSerializer(serializers.ModelSerializer):
     user_lastname = serializers.SerializerMethodField()
     user_profile_picture = serializers.SerializerMethodField()
     comment_count = serializers.SerializerMethodField()
+    account_id = serializers.SerializerMethodField()
 
     def get_user_firstname(self, obj):
         return obj.user.firstname
@@ -81,10 +82,13 @@ class PostSerializer(serializers.ModelSerializer):
     def get_comment_count(self, obj):
         return count_comment(obj.id)
 
+    def get_account_id(self, obj):
+        return obj.user.account.id
+
     class Meta:
         model = Post
         ref_name = 'PostSerializer'
-        fields = ['type', 'id', 'user_firstname', 'user_lastname',
+        fields = ['type', 'id', 'account_id', 'user_firstname', 'user_lastname',
                   'user_profile_picture', 'content', 'published_date',
                   'post_picture', 'comment_count']
 

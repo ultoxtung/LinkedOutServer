@@ -19,6 +19,7 @@ class NotificationListView(APIView):
 
     class OutputSerializer(serializers.Serializer):
         id = serializers.IntegerField()
+        account_id = serializers.IntegerField()
         type = serializers.CharField()
         author_name = serializers.CharField()
         profile_picture = serializers.ImageField()
@@ -30,7 +31,7 @@ class NotificationListView(APIView):
 
         class Meta:
             ref_name = 'NotificationListOut'
-            fields = ['id', 'type', 'author_name', 'profile_picture', 'action',
+            fields = ['id', 'account_id', 'type', 'author_name', 'profile_picture', 'action',
                       'content', 'post_job_id', 'comment_id', 'published_date']
 
     permission_classes = [IsAuthenticated]

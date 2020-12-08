@@ -21,17 +21,20 @@ def create_notification(*, type: str, account: Account, **kwargs):
             account_id=account.id,
             receiver=receiver,
             content='',
-            post_job_id=kwargs.get('post_job_id') if 'post_job_id' in kwargs else 0,
-            comment_id=kwargs.get('comment_id') if 'comment_id' in kwargs else 0,
+            post_job_id=kwargs.get(
+                'post_job_id') if 'post_job_id' in kwargs else 0,
+            comment_id=kwargs.get(
+                'comment_id') if 'comment_id' in kwargs else 0,
             published_date=int(time.time())
         )
         n.save()
 
         if len(content) > MAX_NOTIFICATION_LENGTH:
-            content = content[ : (MAX_NOTIFICATION_LENGTH - 3)] + '...'
+            content = content[: (MAX_NOTIFICATION_LENGTH - 3)] + '...'
         devices = FCMDevice.objects.filter(user=receiver)
         for d in devices:
-            response = d.send_message(title=author_name, body=content, sound=True)
+            response = d.send_message(
+                title=author_name, body=content, sound=True)
             # print(response)
 
     def npost():
@@ -44,7 +47,8 @@ def create_notification(*, type: str, account: Account, **kwargs):
 
         followers = Follow.objects.filter(receiver=account)
         for f in followers:
-            new_notification(receiver=f.sender, author_name=author_name, content=content)
+            new_notification(receiver=f.sender,
+                             author_name=author_name, content=content)
 
     def njob():
         if 'post_job_id' not in kwargs:
@@ -56,7 +60,8 @@ def create_notification(*, type: str, account: Account, **kwargs):
 
         followers = Follow.objects.filter(receiver=account)
         for f in followers:
-            new_notification(receiver=f.sender, author_name=author_name, content=content)
+            new_notification(receiver=f.sender,
+                             author_name=author_name, content=content)
 
     def ninterest():
         if ('receiver' not in kwargs) or ('post_job_id' not in kwargs):
@@ -153,6 +158,7 @@ def list_notification(*, account: Account, t: int = 0) -> list:
     return [
         {
             'id': n.id,
+            'account_id': n.account_id,
             'type': n.type,
             'author_name': get_author_name(n.type, n.account_id),
             'profile_picture': get_profile_picture(n.type, n.account_id),
