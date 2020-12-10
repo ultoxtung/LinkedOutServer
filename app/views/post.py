@@ -49,11 +49,29 @@ class PostGetView(APIView):
             fields = ['id']
 
     class OutputSerializer(serializers.ModelSerializer):
+        account_id = serializers.SerializerMethodField()
+        user_firstname = serializers.SerializerMethodField()
+        user_lastname = serializers.SerializerMethodField()
+        user_profile_picture = serializers.SerializerMethodField()
+
+        def get_account_id(self, obj):
+            return obj.user.account.id
+
+        def get_user_firstname(self, obj):
+            return obj.user.firstname
+
+        def get_user_lastname(self, obj):
+            return obj.user.lastname
+
+        def get_user_profile_picture(self, obj):
+            return obj.user.profile_picture.url
+
         class Meta:
             model = Post
             ref_name = 'PostGetOut'
-            fields = ['id', 'content',
-                      'published_date', 'post_picture']
+            fields = ['id', 'account_id', 'user_firstname', 'user_lastname',
+                      'user_profile_picture', 'content', 'published_date',
+                      'post_picture']
 
     permission_classes = [AllowAny]
     authentication_classes = []

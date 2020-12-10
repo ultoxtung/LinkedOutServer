@@ -82,14 +82,28 @@ class JobGetView(APIView):
             fields = ['id']
 
     class OutputSerializer(serializers.ModelSerializer):
+        account_id = serializers.SerializerMethodField()
+        company_name = serializers.SerializerMethodField()
+        company_profile_picture = serializers.SerializerMethodField()
         cities = CityRelatedField(queryset=City.objects.all(), many=True)
         skills = SkillRelatedField(queryset=Skill.objects.all(), many=True)
+
+        def get_account_id(self, obj):
+            return obj.company.account.id
+
+        def get_company_name(self, obj):
+            return obj.company.name
+
+        def get_company_profile_picture(self, obj):
+            return obj.company.profile_picture.url
 
         class Meta:
             model = Job
             ref_name = 'JobGetOut'
-            fields = ['title', 'description', 'seniority_level', 'employment_type',
-                      'recruitment_url', 'published_date', 'job_picture', 'cities', 'skills']
+            fields = ['id', 'account_id', 'company_name',
+                      'company_profile_picture', 'title', 'description',
+                      'seniority_level', 'employment_type', 'recruitment_url',
+                      'published_date', 'job_picture', 'cities', 'skills']
 
     permission_classes = [AllowAny]
     authentication_classes = []
