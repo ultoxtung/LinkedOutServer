@@ -12,15 +12,18 @@ def list_skill(*, id: int) -> dict:
     }
 
 
-def create_skill(*, account: Account, skill: str) -> dict:
+def create_skill(*, account: Account, skills: list) -> dict:
     user_exist(account.id)
-    user_skill_not_exist(account.id, skill)
-    s = Skill.objects.filter(name__iexact=skill).first()
-    if s is None:
-        raise InvalidInputFormat(
-            "Skill with name {} does not exist in database.".format(skill))
+
     user = User.objects.filter(account__id=account.id).first()
-    user.skills.add(s)
+    for skill in skills:
+        if not user_skill_exist(account.id, skill):
+            s = Skill.objects.filter(name__iexact=skill).first()
+            if s is None:
+                raise InvalidInputFormat(
+                    "Skill with name {} does not exist in database.".format(skill))
+            user.skills.add(s)
+
     return {
         "skills": [s.name for s in user.skills.all()]
     }
@@ -50,13 +53,10 @@ def user_exist(account_id: str, raise_exception=True) -> bool:
     return True
 
 
-def user_skill_exist(account_id: int, skill: str, raise_exception=True) -> bool:
+def user_skill_exist(account_id: int, skill: str) -> bool:
     s = User.objects.filter(
         account__id=account_id).first().skills.filter(name__iexact=skill).first()
     if s is None:
-        if raise_exception:
-            raise InvalidInputFormat(
-                "User has no skill '{}'.".format(s.name))
         return False
     return True
 

@@ -38,11 +38,11 @@ class SkillListView(APIView):
 
 class SkillCreateView(APIView):
     class InputSerializer(serializers.Serializer):
-        skill = serializers.CharField(required=True)
+        skills = serializers.ListField(required=True)
 
         class Meta:
             ref_name = 'SkillCreateIn'
-            fields = ['skill']
+            fields = ['skills']
 
     class OutputSerializer(serializers.Serializer):
         skills = serializers.ListField()
