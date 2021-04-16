@@ -1,10 +1,18 @@
 # LinkedOutServer
 
-Backend server for LinkedOutApp (2021I_INT3120_1 class project)
+Backend server dùng cho [LinkedOutApp](https://github.com/tacbliw/LinkedOutApp) (Bài tập lớn môn Phát triển ứng dụng di động (INT3120 1))
 
-## Prepare Database (MySql)
+## Cài đặt và chuẩn bị môi trường
 
-Install MySql database, then create database and grant permissions.
+### 1. Cài đặt dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### 2. Chuẩn bị cơ sở dữ liệu (MySQL)
+
+Cài đặt MySQL, sau đó tạo cơ sở dữ liệu và cấp quyền.
 
 ```sql
 CREATE DATABASE backend CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
@@ -13,7 +21,7 @@ GRANT ALL PRIVILEGES ON backend.* TO 'backend'@'%';
 FLUSH PRIVILEGES;
 ```
 
-## Prepare environment for backend application
+### 3. Chuẩn bị môi trường
 
 On Linux
 
@@ -27,40 +35,29 @@ export DJANGO_CONFIG_SECRETKEY="ihateyou"
 
 On Windows
 
-Go to Search -> type "env" -> `Edit the system environment variables` -> `Environment Variables...` -> `New...` -> Add the 5 variables above.
+Thêm 5 environment variables ở trên theo [hướng dẫn](https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/).
 
-## Installing dependencies
+## Run
 
-```bash
-python -m pip install -r requirements.txt
-```
-
-## Database migration
+### 1. Migrate database
 
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-## Create superuser account for admin site
-
-```bash
-python manage.py createsuperuser
-```
-
-You will be prompted to enter a username, email address, and strong password.
-
-
-## Running server
+### 2. Chạy server
 
 ```bash
 python manage.py runserver
 ```
 
+## Dữ liệu mẫu
+Có thể sử dụng dữ liệu mẫu ở [đây](https://drive.google.com/file/d/1cNSVeVk8bPR3z8l2FUc8r4v4HPm9esHK/view?usp=sharing)
 
-## Sample data
-Sample data can be found [here](https://drive.google.com/file/d/1cNSVeVk8bPR3z8l2FUc8r4v4HPm9esHK/view?usp=sharing)
-
-There are 6 users, with username "user0001" to "user0006" and 3 companies, with username "company01" to "company03" (without quote marks). All the password is the same as username. All of them have already completed profile. There are also some prepared posts, jobs, comments, notifications, messages. All you have to do is importing the DB.
-
-Admin username is "admin", password "profNPT123" (without quote marks (2))
+Trong bộ dữ liệu mẫu có:
+- 6 tài khoản người dùng: `user0001` - `user0006`, mật khẩu giống tên tài khoản.
+- 3 tài khoản doanh nghiệp: `company01` - `company03`, mật khẩu giống tên tài khoản.
+- Các tags về `Kỹ năng`, `Địa điểm`, `Trường Đại học`.
+- Có sẵn một số bài đăng, công việc, bình luận, thông báo và tin nhẵn.
+- Tài khoản quản trị: `admin:profNPT123` (Đăng nhập tại localhost:8000/admin)
