@@ -156,7 +156,7 @@ REST_FRAMEWORK = {
 # django fcm for firebase push notification
 
 FCM_DJANGO_SETTINGS = {
-    'FCM_SERVER_KEY': 'AAAA_l923ZY:APA91bF755R_jgvluvuOnOwJVqIR59_Kk78NV5QXg_giek3tqZd3PVFxOMHqiwRoa98GmlekPnhtXFmERTofU-xVTEKyRiXe1wyHoXPnaRhYt-xj04-UzlitPOxEo1XJwHR7Nap2Qw-8',
+    'FCM_SERVER_KEY': '',
     'USER_MODEL': 'app.Account',
 }
 
